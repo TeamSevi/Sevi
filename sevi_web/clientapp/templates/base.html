@@ -1,0 +1,231 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title> {% block title %}  {% endblock %} </title>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'iconic-fonts/flat-icons/flaticon.css' %}">
+        <link href="{% static 'iconic-fonts/font-awesome/css/all.min.css' %}" rel="stylesheet">
+        <!-- Bootstrap core CSS -->
+        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+        <!-- jQuery UI -->
+        <link href="{% static 'css/jquery-ui.min.css' %}" rel="stylesheet">
+        <!-- Page Specific CSS (Slick Slider.css) -->
+        <link href="{% static 'css/slick.css' %}" rel="stylesheet">
+        <link href="{% static 'css/datatables.min.css' %}" rel="stylesheet">
+        <!-- Costic styles -->
+        <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    </head>
+    <body class="ms-body ms-aside-left-open ms-primary-theme">
+        <!-- Preloader -->
+        <div id="preloader-wrap">
+          <div class="spinner spinner-8">
+            <div class="ms-circle1 ms-child"></div>
+            <div class="ms-circle2 ms-child"></div>
+            <div class="ms-circle3 ms-child"></div>
+            <div class="ms-circle4 ms-child"></div>
+            <div class="ms-circle5 ms-child"></div>
+            <div class="ms-circle6 ms-child"></div>
+            <div class="ms-circle7 ms-child"></div>
+            <div class="ms-circle8 ms-child"></div>
+            <div class="ms-circle9 ms-child"></div>
+            <div class="ms-circle10 ms-child"></div>
+            <div class="ms-circle11 ms-child"></div>
+            <div class="ms-circle12 ms-child"></div>
+          </div>
+        </div>
+        <!-- Overlays -->
+        <div class="ms-aside-overlay ms-overlay-left ms-toggler" data-target="#ms-side-nav" data-toggle="slideLeft"></div>
+        <div class="ms-aside-overlay ms-overlay-right ms-toggler" data-target="#ms-recent-activity" data-toggle="slideRight"></div>
+        <!-- Sidebar Navigation Left -->
+        <aside id="ms-side-nav" class="side-nav fixed ms-aside-scrollable ms-aside-left">
+          <!-- Logo -->
+          <div class="logo-sn ms-d-block-lg">
+            <a class="pl-0 ml-0 text-center" href="{% url 'index' %}">
+              <img src="{% static 'img/costic/costic-logo-216x62.png' %}" alt="logo" >
+            </a>
+          </div>
+          <!-- Navigation -->
+          <ul class="accordion ms-main-aside fs-14" id="side-nav-accordion">
+            <!-- home -->
+            <li class="menu-item">
+              <a href="index.html" class="has-chevron" data-toggle="collapse" data-target="#dashboard" aria-expanded="false" aria-controls="dashboard"><span><i class="fa fa-archive fs-16"></i> Home </span></a>
+              <ul id="dashboard" class="collapse" aria-labelledby="dashboard" data-parent="#side-nav-accordion">
+                <li> <a href="{% url 'index' %}">Tables</a></li>
+                <li> <a href="{% url 'neworders' %}">New Orders</a></li>
+              </ul>
+            </li>
+            <!-- /home -->
+            <!-- orders -->
+            <li class="menu-item">
+                <a href="{% url 'orders' %}"> <span><i class="fas fa-clipboard-list fs-16"></i>Orders</span>
+                </a>
+              </li>
+            <!-- orders end -->
+            <!-- restaurant -->
+            <li class="menu-item">
+                <a href="{% url 'hotel' %}"> <span><i class="fa fa-tasks fs-16"></i>My Hotel</span>
+                </a>
+              </li>
+              <!-- restaurant end -->
+            <!-- product -->
+            <li class="menu-item">
+              <a href="#" class="has-chevron" data-toggle="collapse" data-target="#product" aria-expanded="false" aria-controls="product"> <span><i class="fa fa-archive fs-16"></i>Items </span>
+              </a>
+              <ul id="product" class="collapse" aria-labelledby="product" data-parent="#side-nav-accordion">
+                <li> <a href="{% url 'productlist' %}">Product List</a>
+                </li>
+                <li> <a href="{% url 'addproduct' %}">Add Product</a>
+                </li>
+              </ul>
+            </li>
+            <!-- product end -->
+            <!-- data -->
+            <li class="menu-item">
+              <a href="#" class="has-chevron" data-toggle="collapse" data-target="#invoice" aria-expanded="false" aria-controls="invoice"> <span><i class="fas fa-file-invoice fs-16"></i>Analysis </span>
+              </a>
+              <ul id="invoice" class="collapse" aria-labelledby="invoice" data-parent="#side-nav-accordion">
+                <li> <a href="pages/invoice/invoicedetail.html">Selling Detail</a>
+                </li>
+                <li> <a href="pages/invoice/invoicelist.html">Other stastitics</a>
+                </li>
+              </ul>
+            </li>
+            <!-- data end -->
+            <!-- customers-->
+            <li class="menu-item">
+              <a href="#" class="has-chevron" data-toggle="collapse" data-target="#customer" aria-expanded="false" aria-controls="customer"> <span><i class="fas fa-user-friends fs-16"></i>Customers </span>
+              </a>
+              <ul id="customer" class="collapse" aria-labelledby="customer" data-parent="#side-nav-accordion">
+                <li> <a href="pages/customer/customersreview.html">Customers Review</a>
+                </li>
+                <li> <a href="pages/customer/customersreview.html">Customers List</a>
+                </li>
+              </ul>
+            </li>
+            <!-- Customers  end -->
+           </ul>
+        </aside>
+        <!-- Main Content -->
+        <main class="body-content" >  
+        <!-- Navigation Bar -->
+        <nav class="navbar ms-navbar" >
+      <div class="ms-aside-toggler ms-toggler pl-0" data-target="#ms-side-nav" data-toggle="slideLeft"> <span class="ms-toggler-bar bg-primary"></span>
+        <span class="ms-toggler-bar bg-primary"></span>
+        <span class="ms-toggler-bar bg-primary"></span>
+      </div>
+      <div class="logo-sn logo-sm ms-d-block-sm">
+        <a class="pl-0 ml-0 text-center navbar-brand mr-0" href="index.html"><img src="{% static 'img/costic/costic-logo-84x41.png' %}" alt="logo"> </a>
+      </div>
+      <ul class="ms-nav-list ms-inline mb-0" id="ms-nav-options">
+        <li class="ms-nav-item ms-search-form pb-0 py-0">
+          <form class="ms-form" method="post">
+            <div class="ms-form-group my-0 mb-0 has-icon fs-14">
+              <input type="search" class="ms-form-input" name="search" placeholder="Search here..." value=""> <i class="flaticon-search text-disabled"></i>
+            </div>
+          </form>
+        </li>
+        <li class="ms-nav-item dropdown"> <a href="#" class="text-disabled ms-has-notification" id="notificationDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="flaticon-bell"></i></a>
+          <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="notificationDropdown">
+            <li class="dropdown-menu-header">
+              <h6 class="dropdown-header ms-inline m-0"><span class="text-disabled">Notifications</span></h6><span class="badge badge-pill badge-info">4 New</span>
+            </li>
+            <li class="dropdown-divider"></li>
+            <li class="ms-scrollable ms-dropdown-list">
+              <a class="media p-2" href="#">
+                <div class="media-body"> <span>12 ways to improve your crypto dashboard</span>
+                  <p class="fs-10 my-1 text-disabled"><i class="material-icons">access_time</i> 30 seconds ago</p>
+                </div>
+              </a>
+              <a class="media p-2" href="#">
+                <div class="media-body"> <span>You have newly registered users</span>
+                  <p class="fs-10 my-1 text-disabled"><i class="material-icons">access_time</i> 45 minutes ago</p>
+                </div>
+              </a>
+              <a class="media p-2" href="#">
+                <div class="media-body"> <span>Your account was logged in from an unauthorized IP</span>
+                  <p class="fs-10 my-1 text-disabled"><i class="material-icons">access_time</i> 2 hours ago</p>
+                </div>
+              </a>
+              <a class="media p-2" href="#">
+                <div class="media-body"> <span>An application form has been submitted</span>
+                  <p class="fs-10 my-1 text-disabled"><i class="material-icons">access_time</i> 1 day ago</p>
+                </div>
+              </a>
+            </li>
+            <li class="dropdown-divider"></li>
+            <li class="dropdown-menu-footer text-center"> <a href="#">View all Notifications</a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="ms-nav-item ms-nav-user dropdown">
+          <a href="#" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <img class="ms-user-img ms-img-round float-right" src="{% static 'img/costic/customer-6.jpg' %}" alt="people">
+          </a>
+          <ul class="dropdown-menu dropdown-menu-right user-dropdown" aria-labelledby="userDropdown">
+            <li class="dropdown-menu-header">
+              <h6 class="dropdown-header ms-inline m-0"><span class="text-disabled">Welcome, {{ personname }}</span></h6>
+            </li>
+            <li class="dropdown-divider"></li>
+            <li class="ms-dropdown-list">
+              <a class="media fs-14 p-2" href="pages/prebuilt-pages/user-profile.html"> <span><i class="flaticon-user mr-2"></i> Profile</span>
+              </a>
+              <a class="media fs-14 p-2" href="pages/prebuilt-pages/user-profile.html"> <span><i class="flaticon-gear mr-2"></i> Account Settings</span>
+              </a>
+            </li>
+            <li class="dropdown-divider"></li>
+            <li class="dropdown-menu-footer">
+              <a class="media fs-14 p-2" href="pages/prebuilt-pages/lock-screen.html"> <span><i class="flaticon-security mr-2"></i> Lock</span>
+              </a>
+            </li>
+            <li class="dropdown-menu-footer">
+              <a class="media fs-14 p-2" href="{% url 'logout' %}"> <span><i class="flaticon-shut-down mr-2"></i> Logout</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <div class="ms-toggler ms-d-block-sm pr-0 ms-nav-toggler" data-toggle="slideDown" data-target="#ms-nav-options"> <span class="ms-toggler-bar bg-primary"></span>
+        <span class="ms-toggler-bar bg-primary"></span>
+        <span class="ms-toggler-bar bg-primary"></span>
+      </div>
+    </nav>
+
+  {% block content %}
+  
+
+  {% endblock %}
+        
+  
+  </main>
+    
+    <!-- SCRIPTS -->
+    <!-- Global Required Scripts Start -->
+    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/perfect-scrollbar.js' %}"></script>
+    <script src="{% static 'js/jquery-ui.min.js' %}"></script>
+    <!-- Global Required Scripts End -->
+     <!-- Page Specific Scripts Start -->
+
+    <script src="{% static 'js/Chart.bundle.min.js' %}"></script>
+    <script src="{% static 'js/widgets.js' %}"> </script>
+    <script src="{% static 'js/clients.js' %}"> </script>
+    <script src="{% static 'js/Chart.Financial.js' %}"> </script>
+    <script src="{% static 'js/d3.v3.min.js' %}"></script>
+    <script src="{% static 'js/topojson.v1.min.js' %}"></script>
+    <script src="{% static 'js/datatables.min.js' %}"></script>
+    <script src="{% static 'js/data-tables.js' %}"></script>
+    <!-- Page Specific Scripts Finish -->
+    <!-- Costic core JavaScript -->
+    <script src="{% static 'js/framework.js' %}"></script>
+    <!-- Settings -->
+    <script src="{% static 'js/settings.js' %}"></script>
+    </body>
+</html>

@@ -1,0 +1,122 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Costic Dashboard</title>
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+  
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+</head>
+
+<body class="ms-body ms-primary-theme ms-logged-out">
+ 
+  <!-- Preloader -->
+  <div id="preloader-wrap">
+    <div class="spinner spinner-8">
+      <div class="ms-circle1 ms-child"></div>
+      <div class="ms-circle2 ms-child"></div>
+      <div class="ms-circle3 ms-child"></div>
+      <div class="ms-circle4 ms-child"></div>
+      <div class="ms-circle5 ms-child"></div>
+      <div class="ms-circle6 ms-child"></div>
+      <div class="ms-circle7 ms-child"></div>
+      <div class="ms-circle8 ms-child"></div>
+      <div class="ms-circle9 ms-child"></div>
+      <div class="ms-circle10 ms-child"></div>
+      <div class="ms-circle11 ms-child"></div>
+      <div class="ms-circle12 ms-child"></div>
+    </div>
+  </div>
+  
+    <!-- Body Content Wrapper -->
+    <div class="ms-content-wrapper ms-auth">
+      <div class="ms-auth-container">
+        <div class="ms-auth-col">
+          <div class="ms-auth-bg"></div>
+        </div>
+        
+        <div class="ms-auth-col">
+          
+          <div class="ms-auth-form">
+            <form class="needs-validation" novalidate="" action="{% url 'signup' %}" method="POST" >
+              <a class="pl-0 ml-0 text-center" href="../../index.html">
+          <img src="{% static 'img/costic/costic-logo-216x62.png' %}" alt="logo">
+          </a>
+          <h3>Create Account</h3>
+          <p>Please enter personal information to continue</p>
+          <div class="form-row">
+            <div class="col-md-6 ">
+                {% csrf_token %}
+              <label for="validationCustom01">First name</label>
+              <div class="input-group">
+                <input type="text" class="form-control" id="validationCustom01" placeholder="First name" value="John" required="true">
+                <div class="valid-feedback">
+                  Looks good!
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 ">
+              <label for="validationCustom02">Last name</label>
+              <div class="input-group">
+                <input type="text" class="form-control" id="validationCustom02" placeholder="Last name" value="Doe" required="true">
+                <div class="valid-feedback">
+                  Looks good!
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-md-12 ">
+              <label for="validationCustom03">Email Address</label>
+              <div class="input-group">
+                <input type="email" class="form-control" id="validationCustom03" placeholder="Email Address" required="true">
+                <div class="invalid-feedback">
+                  Please provide a valid email.
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12 ">
+              <label for="validationCustom04">Password</label>
+              <div class="input-group">
+                <input type="password" class="form-control" id="validationCustom04" placeholder="Password" required="true">
+                <div class="invalid-feedback">
+                  Please provide a password.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-check pl-0">
+              <label class="ms-checkbox-wrap">
+                <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required="true">
+                <i class="ms-checkbox-check"></i>
+              </label>
+              <span> Agree to terms and conditions </span>
+            </div>
+          </div>
+          <button class="btn btn-primary mt-4 d-block w-100" type="submit">Create Account</button>
+          
+          <p class="mb-0 mt-3 text-center">Already have an account? <a class="btn-link" href="{% url 'login' %}">Login</a> </p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <!-- SCRIPTS -->
+  <!-- Global Required Scripts Start -->
+  <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+  <script src="{% static 'js/popper.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  <!-- Costic core JavaScript -->
+  <script src="{% static 'js/framework.js' %}"></script>
+</body>
+
+
+</html>
