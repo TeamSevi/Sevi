@@ -15,8 +15,7 @@ firebaseConfig = {
 firebase = pyrebase.initialize_app(firebaseConfig)
 db = firebase.database()
 storage = firebase.storage()
-
-    
+firstname = ""
 
 # Create your views here.
 def index(request):
@@ -25,7 +24,10 @@ def index(request):
         return redirect("login")
     else:
         firstname = request.session["username"]
-        return render(request, "index.html", {"personname" : firstname})
+        hotalid = request.session["hotelid"]
+        my_stream = db.child("Hotel").child(hotalid).child("totaltables")
+        
+        return render(request, "index.html", {"t":my_stream,  "personname" : firstname})
 
 def login(request):
     if request.method == "POST":
@@ -39,6 +41,7 @@ def login(request):
             if phone==person.key() and password==person.val()["password"]:
                 request.session["user"] = person.key()
                 request.session["username"] = person.val()["firstname"]
+                request.session["hotelid"] = person.val()["hotelid"]
                 return HttpResponseRedirect(reverse("index"))
     return render(request, "login.html")    
 
@@ -55,42 +58,81 @@ def signup(request):
 
 
 def neworders(request):
-    return render(request, "neworders.html")
+    return render(request, "neworders.html",{"personname" : firstname})
 
 def orders(request):
-    uid = request.session["user"]
-    hotelid = db.child("Web").child("hotelusers").child(uid).get().val()
-    for hotel,id in hotelid.items():
-        if hotel=="hotelid":
-            hid = id
-    orderlist = db.child("Hotel").child(hid).child("orders").get().val()
-    li = []
-    for orderid,details in orderlist.items():
-        sl = []
-        i=0
-        sl.append(orderid)
-        #sl.append(details["itemdetails"])
-        ord_details=""
-        itemdetail = details["itemdetails"]
-        for value in itemdetail.values():
-            ord_details += value["itemname"]
-            i+=1
-            if i != len(itemdetail):
-                ord_details += ", "
-        sl.append(ord_details)
-        sl.append(details["username"])
-        sl.append(details["tableno"])
-        sl.append(details["date"])
-        sl.append(details["time"])
-        sl.append(details["price"])
-        li.append(sl)
-    return render(request, "orders.html",{ "orderlist":li})
+    hotalid = request.session["hotelid"]
+    orderlist = db.child("Hotel").child(hotalid).child("orders").get().val()
+    return render(request, "orders.html",{ "orderlist":orderlist,"personname" : firstname})
 
 def myhotel(request):
-    return render(request, "myhotel.html")
+    err = {}
+    if request.method=="POST":
+        try:
+            hotelname = request.POST["hotelname"]
+            ttables = request.POST["tables"]
+            #price = request.POST["price"]
+            #desc = request.POST["description"]
+            #img = request.POST["image"]
+            #status = request.POST["status"]
+            #offer = request.POST["offer"]
+            hotelid = request.session["hotelid"]
+
+            update_db = {"hotelname": hotelname,"totaltables": ttables }
+            db.child("Hotel").child(hotelid).update(update_db)
+            err = {"status":"success","one":"Well done!","two":"Details Updated Successfully."}
+        except:
+            err = {"status":"danger","one":"Try again!","two":"Something went wrong."}
+    hotalid = request.session["hotelid"]
+    hoteldetail = db.child("Hotel").child(hotalid).get().val()
+    hoteldetail.pop("items")
+    hoteldetail.pop("orders")
+    userid = request.session["user"]
+    usersdetail = db.child("Web").child("hotelusers").child(userid).get().val()
+    usersdetail.pop("password")
+    return render(request, "myhotel.html",{ "hdetail": hoteldetail,"udetail": usersdetail, "personname" : firstname,"err":err})
 
 def listitem(request):
-    return render(request, "productlist.html")   
+    hotalid = request.session["hotelid"]
+    itemlist = db.child("Hotel").child(hotalid).child("items").get().val()
+    return render(request, "productlist.html",{"itemlist":itemlist,"personname" : firstname})   
 
 def additem(request):
-    return render(request, "addproduct.html") 
+    b = {"u":"disabled","a":""}
+    err = {}
+    if request.method=="POST":
+        try:
+            itemname = request.POST["itemname"]
+            catagory = request.POST["catagory"]
+            price = request.POST["price"]
+            desc = request.POST["description"]
+            img = request.POST["image"]
+            item_status = request.POST.get('itemstatus',"False")
+            offer = request.POST["offer"]
+            hotelid = request.session["hotelid"]
+            if 'updateitem' in request.POST and "uitemid" in request.session:
+                itemid = request.session["uitemid"]
+                update_db = {"itemname":itemname,"itemcategory":catagory,"itemdescription":desc,"itemimage":img,"itemprice":price,"offer":offer,"status":item_status}
+                db.child("Hotel").child(hotelid).child("items").child(itemid).update(update_db)
+                del request.session["uitemid"]
+                return HttpResponseRedirect(reverse("productlist"))
+            elif 'additem' in request.POST and "uitemid" not in request.session:
+                titem = len(db.child("Hotel").child(hotelid).child("items").get().val())+1
+                itemid = "item" + str(titem)
+                add_db = {"itemname":itemname,"itemcategory":catagory,"itemdescription":desc,"itemimage":img,"itemprice":price,"offer":offer,"status":item_status}
+                db.child("Hotel").child(hotelid).child("items").child(itemid).set(add_db)
+                err = {"status":"success","one":"Well done!","two":"You successfully added item."}
+        except:
+            err = {"status":"danger","one":"Try again!","two":"Something went wrong."}
+    try:
+        del request.session["uitemid"]
+    except KeyError:
+        pass  
+    return render(request, "addproduct.html",{"err":err, "personname" : firstname, "b":b,"t":"True"}) 
+
+def updateitem(request,uid):
+    b = {"u":"","a":"disabled"}
+    request.session["uitemid"] = uid
+    hotalid = request.session["hotelid"]
+    itemdetail = db.child("Hotel").child(hotalid).child("items").child(uid).get().val()
+    return render(request, "addproduct.html",{"idetail":itemdetail, "b":b, "personname" : firstname})

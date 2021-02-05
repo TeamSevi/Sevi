@@ -9,6 +9,7 @@ urlpatterns = [
     path("neworders", views.neworders, name="neworders"),
     path("orders", views.orders, name="orders"),
     path("hotelDetail", views.myhotel, name="hotel"),
-    path("ItemList", views.listitem, name="productlist"),
-    path("AddItem", views.additem, name="addproduct"),
+    path("itemList", views.listitem, name="productlist"),
+    path("addItem", views.additem, name="addproduct"),
+    path("updateitem/<str:uid>",views.updateitem,name="updateproduct"),
 ]
