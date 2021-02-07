@@ -5,6 +5,39 @@
 {% endblock %}
 
 {% block content %}
-{{ t }}
-   <h3> This isanshu page</h3>
+<div class="ms-content-wrapper">
+
+    <div class="row">
+      <div class="col-md-12">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb pl-0">
+            <li class="breadcrumb-item"><a href="#"><i class="material-icons">home</i> Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Tables</a></li>
+            
+          </ol>
+        </nav>
+      </div>
+      <div class="col-md-12">
+        <h3 class="header">Tables</h3>
+      </div>
+      {% for no,table in tables.items %}
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="ms-card">
+          <div class="ms-card-body">
+            <h6>{{no.title}}</h6>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nunc velit, dictum eget nulla a, sollicitudin rhoncus orci. Vivamus nec commodo turpis.</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+ 
+      
+      
+      
+      
+      
+      
+
+    </div>
+  </div>
 {% endblock %}

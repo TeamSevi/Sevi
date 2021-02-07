@@ -16,18 +16,17 @@ firebase = pyrebase.initialize_app(firebaseConfig)
 db = firebase.database()
 storage = firebase.storage()
 firstname = ""
-
 # Create your views here.
 def index(request):
     global firstname
-    if "user" not in request.session:
+    if "hotelid" not in request.session:
         return redirect("login")
     else:
         firstname = request.session["username"]
         hotalid = request.session["hotelid"]
-        my_stream = db.child("Hotel").child(hotalid).child("totaltables")
-        
-        return render(request, "index.html", {"t":my_stream,  "personname" : firstname})
+        tables = db.child("Hotel").child(hotalid).child("tables").get().val()
+        print(tables)
+        return render(request, "index.html", {"tables": tables,  "personname" : firstname})
 
 def login(request):
     if request.method == "POST":
@@ -66,30 +65,56 @@ def orders(request):
     return render(request, "orders.html",{ "orderlist":orderlist,"personname" : firstname})
 
 def myhotel(request):
+    firstname = request.session["username"]
+    usersdetail,hoteldetail="",""
     err = {}
     if request.method=="POST":
-        try:
+        #try:
             hotelname = request.POST["hotelname"]
             ttables = request.POST["tables"]
-            #price = request.POST["price"]
-            #desc = request.POST["description"]
-            #img = request.POST["image"]
-            #status = request.POST["status"]
-            #offer = request.POST["offer"]
+            city = request.POST["city"]
+            address = request.POST["address"]
+            img = request.POST["image"]
+            firstname = request.POST["firstname"]
+            lastname = request.POST["lastname"]
+            phone = request.POST["phone"]
+            email = request.POST["email"]
+            cpassword = request.POST["cpassword"]
+            npassword = request.POST["npassword"]
             hotelid = request.session["hotelid"]
-
-            update_db = {"hotelname": hotelname,"totaltables": ttables }
+            userid = request.session["user"]
+            curr_t = db.child("Web").child("hotelusers").child(userid).child("totaltables").get().val()
+            if ttables!=curr_t:
+                up_table = {}
+                db.child("Hotel").child(hotelid).child("tables").remove()
+                for i in range(1,int(ttables)+1):
+                    up_table.update({"table "+str(i):{"status":"free"}})
+                db.child("Hotel").child(hotelid).child("tables").update(up_table)
+            if img:
+                db.child("Hotel").child(hotelid).update({"hotelimage": img})
+            if npassword:
+                cpass = db.child("Web").child("hotelusers").child(userid).child("password").get().val()
+                if cpass==cpassword:
+                    db.child("Web").child("hotelusers").child(userid).update({"password":npassword})
+                else:
+                    err = {"status":"danger","one":"Try again!","two":"Enter correct password"}
+            user_update = {"firstname": firstname,"lastname": lastname,"phoneno": phone,"email": email}
+            db.child("Web").child("hotelusers").child(userid).update(user_update)
+            update_db = {"hotelname": hotelname,"hotelcity": city,"hoteladdress": address,"totaltables":ttables}
             db.child("Hotel").child(hotelid).update(update_db)
             err = {"status":"success","one":"Well done!","two":"Details Updated Successfully."}
-        except:
-            err = {"status":"danger","one":"Try again!","two":"Something went wrong."}
+        #except:
+            #err = {"status":"danger","one":"Try again!","two":"Something went wrong."}
     hotalid = request.session["hotelid"]
-    hoteldetail = db.child("Hotel").child(hotalid).get().val()
-    hoteldetail.pop("items")
-    hoteldetail.pop("orders")
-    userid = request.session["user"]
-    usersdetail = db.child("Web").child("hotelusers").child(userid).get().val()
-    usersdetail.pop("password")
+    try:
+        hoteldetail = db.child("Hotel").child(hotalid).get().val()
+        hoteldetail.pop("items")
+        hoteldetail.pop("orders")
+        userid = request.session["user"]
+        usersdetail = db.child("Web").child("hotelusers").child(userid).get().val()
+        usersdetail.pop("password")
+    except:
+        pass
     return render(request, "myhotel.html",{ "hdetail": hoteldetail,"udetail": usersdetail, "personname" : firstname,"err":err})
 
 def listitem(request):
@@ -108,11 +133,13 @@ def additem(request):
             desc = request.POST["description"]
             img = request.POST["image"]
             item_status = request.POST.get('itemstatus',"False")
-            offer = request.POST["offer"]
+            offer = request.POST.get("offer","False")
             hotelid = request.session["hotelid"]
             if 'updateitem' in request.POST and "uitemid" in request.session:
                 itemid = request.session["uitemid"]
-                update_db = {"itemname":itemname,"itemcategory":catagory,"itemdescription":desc,"itemimage":img,"itemprice":price,"offer":offer,"status":item_status}
+                if img:
+                    db.child("hotel").child(hotelid).child("items").child(itemid).update({"itemimage": img})
+                update_db = {"itemname":itemname,"itemcategory":catagory,"itemdescription":desc,"itemprice":price,"offer":offer,"status":item_status}
                 db.child("Hotel").child(hotelid).child("items").child(itemid).update(update_db)
                 del request.session["uitemid"]
                 return HttpResponseRedirect(reverse("productlist"))

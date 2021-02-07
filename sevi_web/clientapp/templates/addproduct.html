@@ -27,7 +27,6 @@
           </div>
   
   
-          {{ idetail }}{{ itemid }}
           <div class="col-xl-6 col-md-12">
             <div class="ms-panel ms-panel-fh">
               <div class="ms-panel-header">
@@ -52,10 +51,10 @@
                       <div class="input-group">
                         <select class="form-control" id="validationCustom22" name="catagory" value="others" required>
                           <option value="">--please choose an option--</option>
-                          <option value="Fast food">Fast food</option>
-                          <option value="others">others</option>
-                          <option value="">Catagory 3</option>
-                          <option value="">Catagory 4</option>
+                          <option value="Fast food">Fast food</option>   
+                          <option value="pizza">Pizza</option>
+                          <option value="burger">Burger</option>
+                          <option value="others">Others</option>
   
                         </select>
                         <div class="invalid-feedback">
@@ -66,7 +65,7 @@
                     <div class="col-md-6 mb-3">
                         <label for="validationCustom25">Price</label>
                         <div class="input-group">
-                          <input type="text" class="form-control" id="validationCustom25" placeholder="$10" name="price" value="{{idetail.itemprice}}" required>
+                          <input type="text" class="form-control" id="validationCustom25" placeholder="10 Rs." name="price" value="{{idetail.itemprice}}" required>
                           <div class="invalid-feedback">
                             Price
                           </div>
@@ -75,16 +74,16 @@
                     <div class="col-md-12 mb-3">
                       <label for="validationCustom12">Description</label>
                       <div class="input-group">
-                        <textarea rows="5" id="validationCustom12" class="form-control" placeholder="Message" name="description" value="{{idetail.itemdescription}}" required></textarea>
+                        <textarea rows="5" id="validationCustom12" class="form-control" placeholder="Message" name="description" required>{{idetail.itemdescription}}</textarea>
                         <div class="invalid-feedback">
-                          Please provide a message.
+                          Please provide a description.
                         </div>
                       </div>
                     </div>
                     <div class="col-md-12 mb-3">
                       <label for="validationCustom12">Product Image</label>
                       <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="validatedCustomFile" name="image" value="{{idetail.itemimage}}">
+                        <input type="file" class="custom-file-input" id="validatedCustomFile" name="image" >
                         <label class="custom-file-label" for="validatedCustomFile">Upload Images...</label>
                         <div class="invalid-feedback">Example invalid custom file feedback</div>
                       </div>
@@ -108,7 +107,7 @@
                   <div class="ms-panel-header">
                     <h6>Product </h6>
                   </div>
-                  <div class="ms-panel-body">
+                  <!--<div class="ms-panel-body">
                     <div id="imagesSlider" class="ms-image-slider carousel slide" data-ride="carousel">
                       <div class="carousel-inner">
                         <div class="carousel-item active">
@@ -127,7 +126,7 @@
                         <li data-target="#imagesSlider" data-slide-to="2"><img class="d-block w-100" src="../../assets/img/costic/add-product-3.jpg" alt="Third slide"></li>
                       </ol>
                     </div>
-                  </div>
+                  </div>-->
                   <div class="ms-panel-header new">
                     <p class="medium">Status Available</p>
                     <div>
@@ -139,26 +138,21 @@
                   </div>
                   <div class="ms-panel-header new">
                     <p class="medium">Discount Active</p>
-                    {% if idetail.offer is True %}
                     <div>
-                      <label class="ms-switch">
-                        <input type="checkbox" name="offer" value="True"  checked>
-                        <span class="ms-switch-slider round"></span>
-                      </label>
+                      {% if idetail.offer %}
+                        <input type="radio" name="offer" value="True"  checked>yes
+                      {% else %}  
+                        <input type="radio" name="offer" value="False" >no
+                      {% endif %}
                     </div>
-                    {% else %}
-                    <div>
-                      <label class="ms-switch">
-                        <input type="checkbox" name="offer" value="True"  >
-                        <span class="ms-switch-slider round"></span>
-                      </label>
-                    </div>
-                    {% endif %}
                   </div>
                   <div class="ms-panel-header new">
                     <button class="btn btn-secondary d-block" type="submit" name="updateitem" value="Update" {{b.u}}>Update</button>
                     <button class="btn btn-primary d-block" type="submit" name="additem" value="Add" {{b.a}}>Save and Add</button>
                   </div>
+
+
+
                 </div>
 
               </div>

@@ -5,7 +5,6 @@
 {% endblock %}
 
 {% block content %}
-{{hdetail }}{{udetail}}
    <!-- Body Content Wrapper -->
    <div class="ms-content-wrapper">
     <div class="row">
@@ -41,14 +40,14 @@
                 <div class="col-md-12 mb-3">
                   <label for="validationCustom18">Hotel Name</label>
                   <div class="input-group">
-                    <input type="text" class="form-control" id="validationCustom18" placeholder="Hotel Name" value="" name="hotelname" required>
+                    <input type="text" class="form-control" id="validationCustom18" placeholder="Hotel Name" value="{{hdetail.hotelname}}" name="hotelname" required>
                     <div class="valid-feedback">
                       Looks good!
                     </div>
                   </div>
                 </div>
-
-                <div class="col-md-6 mb-3">
+ 
+                <!--<div class="col-md-6 mb-3">
                   <label for="validationCustom22">Select Catagory</label>
                   <div class="input-group">
                     <select class="form-control" id="validationCustom22" name="catagory" required>
@@ -62,20 +61,26 @@
                       Please select a Catagory.
                     </div>
                   </div>
-                </div>
+                </div>-->
                 <div class="col-md-6 mb-3">
                     <label for="validationCustom25">No. of tables</label>
                     <div class="input-group">
-                      <input type="text" class="form-control" id="validationCustom25" name="tables" required>
+                      <input type="number" class="form-control" id="validationCustom25" name="tables" value="{{hdetail.totaltables}}" required>
                       <div class="invalid-feedback">
-                        Price
+                        Invalid Table number!!!
                       </div>
                     </div>
                 </div>
                 <div class="col-md-12 mb-3">
+                  <label for="validationCustom18">City</label>
+                  <div class="input-group">
+                    <input type="text" class="form-control" id="validationCustom18" placeholder="Enter city name" value="{{hdetail.hotelcity}}" name="city" required>
+                  </div>
+                </div>
+                <div class="col-md-12 mb-3">
                   <label for="validationCustom12">Address</label>
                   <div class="input-group">
-                    <textarea rows="5" id="validationCustom12" class="form-control" placeholder="Type here." name="address" required></textarea>
+                    <textarea rows="5" id="validationCustom12" class="form-control" placeholder="Type here." name="address" required>{{hdetail.hoteladdress}}</textarea>
                     <div class="invalid-feedback">
                       Please provide a message.
                     </div>
@@ -95,7 +100,7 @@
 
 
             
-
+          
           </div>
         </div>
 
@@ -106,51 +111,75 @@
           <div class="col-md-12">
             <div class="ms-panel">
               <div class="ms-panel-header">
-                <h6>Product </h6>
+                <h6>User Details</h6>
               </div>
-              <div class="ms-panel-body">
-                <div id="imagesSlider" class="ms-image-slider carousel slide" data-ride="carousel">
-                  <div class="carousel-inner">
-                    <div class="carousel-item active">
-                      <img class="d-block w-100" src="../../assets/img/costic/add-product-1.jpg" alt="First slide">
-                    </div>
-                    <div class="carousel-item">
-                      <img class="d-block w-100" src="../../assets/img/costic/add-product-2.jpg" alt="Second slide">
-                    </div>
-                    <div class="carousel-item">
-                      <img class="d-block w-100" src="../../assets/img/costic/add-product-3.jpg" alt="Third slide">
-                    </div>
-                  </div>
-                  <ol class="carousel-indicators">
-                    <li data-target="#imagesSlider" data-slide-to="0" class="active"> <img class="d-block w-100" src="../../assets/img/costic/add-product-1.jpg" alt="First slide"></li>
-                    <li data-target="#imagesSlider" data-slide-to="1"><img class="d-block w-100" src="../../assets/img/costic/add-product-2.jpg" alt="Second slide"></li>
-                    <li data-target="#imagesSlider" data-slide-to="2"><img class="d-block w-100" src="../../assets/img/costic/add-product-3.jpg" alt="Third slide"></li>
-                  </ol>
-                </div>
-              </div>
-              <div class="ms-panel-header new">
-                <p class="medium">Status Available</p>
-                <div>
-                  <label class="ms-switch">
-                    <input type="checkbox" name="status">
-                    <span class="ms-switch-slider round"></span>
-                  </label>
-                </div>
-              </div>
-              <div class="ms-panel-header new">
-                <p class="medium">Discount Active</p>
-                <div>
-                  <label class="ms-switch">
-                    <input type="checkbox" checked="" name="offer">
-                    <span class="ms-switch-slider round"></span>
-                  </label>
-                </div>
-              </div>
-              <div class="ms-panel-header new">
-                <button class="btn btn-primary d-block" type="submit">Save and Add</button>
-              </div>
-            </div>
 
+            <div class="ms-panel-body">
+              <div class="col-md-12 mb-3">
+                <label for="validationCustom18">First Name</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" id="validationCustom18" placeholder="Enter the first name" value="{{udetail.firstname}}" name="firstname" required>
+                  <!--<div class="valid-feedback">
+                    Looks good!
+                  </div>-->
+                </div>
+              </div>
+
+              <div class="col-md-12 mb-3">
+                <label for="validationCustom18">Last Name</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" id="validationCustom18" placeholder="Enter the last name" value="{{udetail.lastname}}" name="lastname" required>
+                  <!--<div class="valid-feedback">
+                    Looks good!
+                  </div>-->
+                </div>
+              </div>
+
+              <div class="col-md-12 mb-3">
+                <label for="validationCustom18">Phone Number</label>
+                <div class="input-group">
+                  <input type="tel" class="form-control" id="validationCustom18" placeholder="Enter phone number" value="{{udetail.phoneno}}" name="phone" pattern="[0-9]{10}" required>
+                  <div class="valid-feedback">
+                    Looks great!
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12 mb-3">
+                <label for="validationCustom18">Email address</label>
+                <div class="input-group">
+                  <input type="email" class="form-control" id="validationCustom18" placeholder="Enter email address" value="{{udetail.email}}" name="email" required>
+                  <div class="valid-feedback">
+                    Looks good!
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12 mb-3">
+                <label for="validationCustom18">Current Password</label>
+                <div class="input-group">
+                  <input type="password" class="form-control" id="validationCustom18" placeholder="Enter password" value="" name="cpassword" >
+                  <div class="valid-feedback">
+                    Looks good!
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12 mb-3">
+                <label for="validationCustom18">New Password</label>
+                <div class="input-group">
+                  <input type="password" class="form-control" id="validationCustom18" placeholder="Re-enter password" value="" name="npassword" >
+                  <div class="valid-feedback">
+                    Looks good!
+                  </div>
+                </div>
+              </div>
+
+              <div class="ms-panel-header new">
+                <button class="btn btn-primary d-block" type="submit" name="update" value="update">Save and Add</button>
+              </div>
+            
+            </div>
           </div>
         </form>
         </div>
