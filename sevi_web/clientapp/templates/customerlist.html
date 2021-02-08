@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Customer List 
+{% endblock %}
+
+{% block content %}
+   <div class="ms-content-wrapper">
+    <div class="row">
+
+      <div class="col-md-12">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb pl-0">
+            <li class="breadcrumb-item"><a href="#"><i class="material-icons">home</i> Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Customers</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Customer List</li>
+          </ol>
+        </nav>
+
+        <div class="ms-panel">
+          <div class="ms-panel-header">
+            <h6>Customert List</h6>
+          </div>
+          <div class="ms-panel-body">
+            {% if res %}
+              <div class="table-responsive table-list" >
+                <table class="table table-hover thead-primary">
+                  <thead>
+                    <tr>
+                      <th scope="col">Oder ID</th>
+                      <th scope="col">User Name</th>
+                      <!--<th scope="col">Iteams</th>-->
+                      <th scope="col">Date</th>
+                      <th scope="col">Time</th>
+                      <th scope="col">Contact Number</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for id,res in res.items %}
+                    
+                    <tr>
+                        <td>{{ id.title }}</td>
+                        <td>{{ res.username }}</td>
+                        <!--<td>{{ res.itemdetails }}</td>-->
+                        <td>{{ res.date }}</td>
+                        <td>{{ res.time }}</td>
+                        <td>{{ res.userid }}</td>
+                    </tr>
+                    {% endfor %}
+                    
+
+                  </tbody>
+                </table>
+              </div>
+              {% else %}
+              <h4 style="text-align: center;">No Items found</h4>
+              {% endif %}  
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+{% endblock %}

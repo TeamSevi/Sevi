@@ -163,3 +163,15 @@ def updateitem(request,uid):
     hotalid = request.session["hotelid"]
     itemdetail = db.child("Hotel").child(hotalid).child("items").child(uid).get().val()
     return render(request, "addproduct.html",{"idetail":itemdetail, "b":b, "personname" : firstname})
+
+def customerlist(request):
+    hotalid = request.session["hotelid"]
+    res=db.child("Hotel").child(hotalid).child("orders").get().val()
+    print(res)
+    return render(request, "customerlist.html",{"res":res})
+
+
+def customersreview(request):
+    hotalid = request.session["hotelid"]
+    res=db.child("Hotel").child(hotalid).child("reviews").get().val()
+    return render(request, "customersreview.html",{"res":res})
