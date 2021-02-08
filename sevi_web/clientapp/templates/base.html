@@ -21,6 +21,7 @@
         <!-- Costic styles -->
         <link href="{% static 'css/style.css' %}" rel="stylesheet">
         {% block link %} {% endblock %}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
     <body class="ms-body ms-aside-left-open ms-primary-theme">
         <!-- Preloader 
@@ -102,9 +103,9 @@
               <a href="#" class="has-chevron" data-toggle="collapse" data-target="#customer" aria-expanded="false" aria-controls="customer"> <span><i class="fas fa-user-friends fs-16"></i>Customers </span>
               </a>
               <ul id="customer" class="collapse" aria-labelledby="customer" data-parent="#side-nav-accordion">
-                <li> <a href="pages/customer/customersreview.html">Customers Review</a>
+                <li> <a href="{% url 'customersreview' %}">Customers Review</a>
                 </li>
-                <li> <a href="pages/customer/customersreview.html">Customers List</a>
+                <li> <a href="{% url 'customerlist' %}">Customers List</a>
                 </li>
               </ul>
             </li>
