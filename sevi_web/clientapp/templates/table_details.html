@@ -1,0 +1,31 @@
+<div class="ms-invoice-table table-responsive mt-5 ">
+    {{tdetail.username}}
+    {{tdetail.time}}
+  <table class="table table-hover text-right thead-light">
+    <thead>
+      <tr class="text-capitalize">
+        <th class="text-center w-5">Id</th>
+        <th class="text-left">Itemname</th>
+        <th>quantity</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody>  
+      <tr>
+        <td class="text-center"></td>
+        <td class="text-left"></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="4">Total Cost:</td>
+        <td>{{tdetail.total_price}}</td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+<div class="invoice-buttons text-right"> <a href="#" class="btn btn-primary mr-2">Print Invoice</a>
+  <a href="#" class="btn btn-primary">Send Invoice</a>
+</div>

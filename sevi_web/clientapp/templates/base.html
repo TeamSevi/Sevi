@@ -7,6 +7,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width,initial-scale=1">
         <title> {% block title %}  {% endblock %} </title>
+        <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="{% static 'iconic-fonts/flat-icons/flaticon.css' %}">
         <link href="{% static 'iconic-fonts/font-awesome/css/all.min.css' %}" rel="stylesheet">
@@ -19,9 +20,10 @@
         <link href="{% static 'css/datatables.min.css' %}" rel="stylesheet">
         <!-- Costic styles -->
         <link href="{% static 'css/style.css' %}" rel="stylesheet">
+        {% block link %} {% endblock %}
     </head>
     <body class="ms-body ms-aside-left-open ms-primary-theme">
-        <!-- Preloader -->
+        <!-- Preloader 
         <div id="preloader-wrap">
           <div class="spinner spinner-8">
             <div class="ms-circle1 ms-child"></div>
@@ -37,7 +39,7 @@
             <div class="ms-circle11 ms-child"></div>
             <div class="ms-circle12 ms-child"></div>
           </div>
-        </div>
+        </div>-->
         <!-- Overlays -->
         <div class="ms-aside-overlay ms-overlay-left ms-toggler" data-target="#ms-side-nav" data-toggle="slideLeft"></div>
         <div class="ms-aside-overlay ms-overlay-right ms-toggler" data-target="#ms-recent-activity" data-toggle="slideRight"></div>
@@ -53,11 +55,10 @@
           <ul class="accordion ms-main-aside fs-14" id="side-nav-accordion">
             <!-- home -->
             <li class="menu-item">
-              <a href="index.html" class="has-chevron" data-toggle="collapse" data-target="#dashboard" aria-expanded="false" aria-controls="dashboard"><span><i class="material-icons fs-16">dashboard</i> Home </span></a>
-              <ul id="dashboard" class="collapse" aria-labelledby="dashboard" data-parent="#side-nav-accordion">
+              <a href="{% url 'index' %}" ><span><i class="material-icons fs-16">dashboard</i> Home </span></a>
+            <!--  <ul id="dashboard" class="collapse" aria-labelledby="dashboard" data-parent="#side-nav-accordion">
                 <li> <a href="{% url 'index' %}">Tables</a></li>
-                <li> <a href="{% url 'neworders' %}">New Orders</a></li>
-              </ul>
+              </ul>-->
             </li>
             <!-- /home -->
             <!-- orders -->
@@ -206,7 +207,6 @@
     
     <!-- SCRIPTS -->
     <!-- Global Required Scripts Start -->
-    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'js/popper.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/perfect-scrollbar.js' %}"></script>

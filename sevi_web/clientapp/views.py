@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect,HttpResponse,JsonResponse
+from django.core import serializers
 from django.urls import reverse
+import json
 import pyrebase
 
 firebaseConfig = {
@@ -25,8 +27,19 @@ def index(request):
         firstname = request.session["username"]
         hotalid = request.session["hotelid"]
         tables = db.child("Hotel").child(hotalid).child("tables").get().val()
-        print(tables)
         return render(request, "index.html", {"tables": tables,  "personname" : firstname})
+
+
+def tabledetails(request):
+    #tableid = json.loads(request.body)
+    #tid = tableid["tableid"]
+    tid = request.GET["tableid"]
+    hotalid = request.session["hotelid"]
+    data = db.child("Hotel").child(hotalid).child("tables").child(tid).child("order").get().val()
+    #inst = serializers.serialize('json',[data])
+    print(data)
+    return JsonResponse({"instance":data})
+    #return JsonResponse(json.dumps(data))  
 
 def login(request):
     if request.method == "POST":
@@ -69,7 +82,7 @@ def myhotel(request):
     usersdetail,hoteldetail="",""
     err = {}
     if request.method=="POST":
-        #try:
+        try:
             hotelname = request.POST["hotelname"]
             ttables = request.POST["tables"]
             city = request.POST["city"]
@@ -103,8 +116,8 @@ def myhotel(request):
             update_db = {"hotelname": hotelname,"hotelcity": city,"hoteladdress": address,"totaltables":ttables}
             db.child("Hotel").child(hotelid).update(update_db)
             err = {"status":"success","one":"Well done!","two":"Details Updated Successfully."}
-        #except:
-            #err = {"status":"danger","one":"Try again!","two":"Something went wrong."}
+        except:
+            err = {"status":"danger","one":"Try again!","two":"Something went wrong."}
     hotalid = request.session["hotelid"]
     try:
         hoteldetail = db.child("Hotel").child(hotalid).get().val()
@@ -144,7 +157,10 @@ def additem(request):
                 del request.session["uitemid"]
                 return HttpResponseRedirect(reverse("productlist"))
             elif 'additem' in request.POST and "uitemid" not in request.session:
-                titem = len(db.child("Hotel").child(hotelid).child("items").get().val())+1
+                titem = db.child("Hotel").child(hotelid).child("items").get().val()
+                if titem is None:
+                    titem = {}
+                titem = len(titem)+1
                 itemid = "item" + str(titem)
                 add_db = {"itemname":itemname,"itemcategory":catagory,"itemdescription":desc,"itemimage":img,"itemprice":price,"offer":offer,"status":item_status}
                 db.child("Hotel").child(hotelid).child("items").child(itemid).set(add_db)
