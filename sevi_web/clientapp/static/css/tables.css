@@ -11,31 +11,53 @@
     align-self: center;
     text-decoration: solid;
 }
-.status-tab {
-    height: 2px;
-    
-}
-
-.status-draw{
-  height: 10px;
-  width: 10px;
-  margin-right: 2px;
-  border-radius: 50%;
-  display: inline-block;
-}
-.status-free {
+.status-tab-free {
     background-color: #adadad;
+    height: 2px;
 }
-
-.status-active {
+.status-tab-active {
     background-color: #ddf31a;
+    height: 2px;
 }
-
-.status-running {
-    background-color: #40ff06;
+.status-tab-running {
+    background-color: #5cca5c;
+    height: 2px;
 }
-.status-completed {
+.status-tab-completed {
     background-color: #fa0303;
+    height: 2px;
+}
+.status-draw-free {
+    background-color: #adadad;
+    height: 10px;
+    width: 10px;
+    margin-right: 2px;
+    border-radius: 50%;
+    display: inline-block;
+}
+.status-draw-active {
+    background-color: #ddf31a;
+    height: 10px;
+    width: 10px;
+    margin-right: 2px;
+    border-radius: 50%;
+    display: inline-block;
+}
+.status-draw-running {
+    background-color: #5cca5c;
+    height: 10px;
+    width: 10px;
+    margin-right: 2px;
+    border-radius: 50%;
+    display: inline-block;
+}
+.status-draw-completed {
+    background-color: #fa0303;
+    height: 10px;
+    width: 10px;
+    margin-right: 2px;
+    border-radius: 50%;
+    display: inline-block;
 }
 /*
 .tabs.index-tab li a{

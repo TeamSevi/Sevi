@@ -8,10 +8,9 @@
 {% block link %}
     <link rel="stylesheet" href="{% static 'css/tables.css' %}">
     <script>
-        var tid
+        var order;
         $(document).ready(function(){
-            var tid
-            $(".ms-card").click(function(e){
+        /*    $(".ms-card").click(function(e){
                 $(".table tbody tr").remove()
                 tid = this.id
                 $.ajax({
@@ -48,6 +47,36 @@
                 $("#tab2").hide()
                 document.getElementById("order-details").style.visibility = "visible";
                 e.preventDefault();
+            });*/
+
+            $(".ms-card").click(function(e){
+                $("#tab1").hide()
+                $("#tab2").hide()
+                document.getElementById("order-details").style.visibility = "visible";
+                e.preventDefault();
+                console.log(order);
+                $(".table tbody tr").remove()
+                $("#cutomer-detail").text("")
+                $("#price").text("")
+                tid = this.id
+                if(order[tid]["status"]=="running"){
+                  items = order[tid]["order"]["order_items"]
+                  $("#cutomer-detail").html(`Customer Name : ${order[tid]["order"]["username"]||""} <br>Time : ${order[tid]["order"]["time"]||""}`)
+                  for(let v in items){
+                    $(".table tbody").html(
+                    `<tr>
+                    <td class="text-center">${items[v]["itemid"]||""}</td>
+                    <td class="text-left">${items[v]["itemname"]||""}</td>
+                    <td></td>
+                    <td>${items[v]["quantity"]||""}</td>
+                    <td>${items[v]["price"]||""}</td>
+                    </tr>`
+                    )
+                  } 
+                  $("#price").html(order[tid]["order"]["total_price"])
+                }else{
+                  $(".table tbody").html(`<tr><td colspan=5 style="text-align: center;pointer-events: none;"><h3>No Order Yet!</h3></td><tr>`)
+                }
             });
 
             $(".tables a").click(function(){
@@ -63,7 +92,42 @@
 
         });
             
+        setInterval(function() {
+          var s = [];
+          $(".htable span").each(function(){
+              s.push($(this).text())
+          });
+          //var data_to_send = $.serialize(s); 
+          //var s = JSON.stringify(data_to_send)
+          $.ajax({
+                //type:"POST",
+                //data:{"csrfmiddlewaretoken":"{{csrf_token}}",
+                //"tstatus[]":s},
+                url: "{% url 'check-status' %}",
+                success: function(response){
+                  var status = response["status"]
+                  order=response["status"]
+                  for(let v in status){
+                        $("[id*='"+v+"'] span").text(status[v]["status"])
+                        if(!$("[id*='"+v+"'] [class*='status-']").hasClass("status-draw-"+status[v]["status"])){
+                          var classList = $("[id*='"+v+"'] [class*='status-draw-']").attr("class");
+                          var classList2 = $("[id*='"+v+"'] [class*='status-tab-']").attr("class");
+                          //var classArr = classList.split(/\s+/);
+                          $("[id*='"+v+"'] [class*='status-draw-']").addClass("status-draw-"+status[v]["status"])
+                          $("[id*='"+v+"'] [class*='status-draw-']").removeClass(classList)
+                          $("[id*='"+v+"'] [class*='status-tab-']").addClass("status-tab-"+status[v]["status"])
+                          $("[id*='"+v+"'] [class*='status-tab-']").removeClass(classList2)
+                        }
+                       
+                        //if(status[v]["status"]=="running"){
+            
+                              
 
+                  }
+                }
+          });
+        },1000)
+        
     
     </script>
 {% endblock %}
@@ -104,15 +168,15 @@
         <div class="row">    
         {% for no,table in tables.items %}
         <div class="col-lg-2 col-md-3 col-sm-4">
-            <div class="ms-card" id="{{no}}">
-                <div class="ms-card-body">
-                <h6 id="table-no">{{no.title}}</h6>
+            <div class="ms-card abc {{no}}" id="{{no}}">
+                <div class="ms-card-body htable">
+                <h6 id="table-no">Table {{no|slice:"5:"}}</h6>
                     <div class="tables-body">
-                    <div class="status-{{table.status}} status-draw"></div>    
-                    <span id="table-status">{{ table.status }}</span>
+                    <div class="status-draw-{{table.status}}"></div>    
+                    <span id="table-status">{{table.status}}</span>
                     </div>
                 </div>
-                <div class="status-tab status-{{table.status}}"></div>
+                <div class="status-tab-{{table.status}}"></div>
             </div>
         </div>
         {% endfor %}
@@ -121,7 +185,20 @@
 
 
       <div role="tabpanel" class="tab-pane fade" id="tab2"> 
-          orders will be here
+        <div class="row">    
+          <div class="col-lg-2 col-md-3 col-sm-4">
+              <div class="ms-card abc" id="{{no}}">
+                  <div class="ms-card-body">
+                  <h6 id="table-no"></h6>
+                      <div class="tables-body">
+                      <div class="status-draw status-free"></div>    
+                      <span id="table-status"></span>
+                      </div>
+                  </div>
+                  <div class="status-tab status-active"></div>
+              </div>
+          </div>
+          </div>
       </div>
 
 
@@ -143,17 +220,17 @@
                   <tr class="text-capitalize">
                     <th class="text-center w-5">Id</th>
                     <th class="text-left">Itemname</th>
+                    <th></th>
                     <th>quantity</th>
                     <th>Price</th>
                   </tr>
                 </thead>
-                <tbody>  
-                  
+                <tbody>                    
                 </tbody>
                 <tfoot>
                   <tr>
                     <td colspan="4">Total Cost:</td>
-                    <td id="price">heyy</td>
+                    <td id="price"></td>
                   </tr>
                 </tfoot>
               </table>

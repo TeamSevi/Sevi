@@ -13,6 +13,7 @@ urlpatterns = [
     path("addItem", views.additem, name="addproduct"),
     path("updateitem/<str:uid>",views.updateitem,name="updateproduct"),
     path("tabledetails",views.tabledetails,name="tabledetails"),
+    path("check-status",views.check_status,name="check-status"),
     path("customerlist", views.customerlist,name="customerlist"),
     path("customersreview",views.customersreview,name="customersreview"),
 ]

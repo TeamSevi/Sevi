@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect,HttpResponse,JsonResponse
 from django.core import serializers
 from django.urls import reverse
+from collections import OrderedDict
 import json
 import pyrebase
 
@@ -21,13 +22,18 @@ firstname = ""
 # Create your views here.
 def index(request):
     global firstname
+    li = []
     if "hotelid" not in request.session:
         return redirect("login")
     else:
         firstname = request.session["username"]
         hotalid = request.session["hotelid"]
-        tables = db.child("Hotel").child(hotalid).child("tables").get().val()
-        return render(request, "index.html", {"tables": tables,  "personname" : firstname})
+        tables = db.child("Hotel").child(hotalid).child("tables").get()
+        for values in tables.each():
+            li.append((values.key(),values.val()))
+        li.sort(key = lambda x: int(x[0][5:]))
+        li = OrderedDict(li)
+        return render(request, "index.html", {"tables": li,  "personname" : firstname})
 
 
 def tabledetails(request):
@@ -37,9 +43,17 @@ def tabledetails(request):
     hotalid = request.session["hotelid"]
     data = db.child("Hotel").child(hotalid).child("tables").child(tid).child("order").get().val()
     #inst = serializers.serialize('json',[data])
-    print(data)
+    #print(data)
     return JsonResponse({"instance":data})
     #return JsonResponse(json.dumps(data))  
+
+def check_status(request):
+    #cstatus = json.loads("tstatus")
+    #cstatus = request.GET.get("tstatus[]","free")
+    hotalid = request.session["hotelid"]
+    status = db.child("Hotel").child(hotalid).child("tables").get().val()
+    #print(cstatus)
+    return JsonResponse({"status":status})
 
 def login(request):
     if request.method == "POST":
@@ -66,7 +80,25 @@ def logout(request):
     return redirect('index')
 
 def signup(request):
-    return render(request, "signup.html")
+    status=""
+    if request.method=="POST":
+        num=request.POST.get('mobile',False)
+        status="Please enter personal information to continue"
+        check=db.child("Web").child("hotelusers").child(num).get().val()
+        fname=request.POST.get('fname',False).lower()
+        lname=request.POST.get('lname',False).lower()
+        email=request.POST.get('email',False).lower()
+        passw=request.POST.get('passw',False).lower()
+        hd = db.child("Hotel").get().val()
+        hid = "hotel"+str(len(hd)+1)
+        if not check:
+            val={"email":email,"firstname":fname,"hotelid":hid,"hotelname":None,"lastname":lname,"password":passw,"phoneno":num}
+            db.child("Web").child("hotelusers").child(num).set(val)
+            db.child("Hotel").child(hid).set({"items":"","orders":"","totaltables":0})
+            return HttpResponseRedirect(reverse("index"))
+        else:
+            status="User already exits !!! Please log in "
+    return render(request, "signup.html",{'status':status})
 
 
 def neworders(request):
@@ -96,12 +128,12 @@ def myhotel(request):
             npassword = request.POST["npassword"]
             hotelid = request.session["hotelid"]
             userid = request.session["user"]
-            curr_t = db.child("Web").child("hotelusers").child(userid).child("totaltables").get().val()
+            curr_t = db.child("Hotel").child(hotelid).child("totaltables").get().val()
             if ttables!=curr_t:
                 up_table = {}
                 db.child("Hotel").child(hotelid).child("tables").remove()
                 for i in range(1,int(ttables)+1):
-                    up_table.update({"table "+str(i):{"status":"free"}})
+                    up_table["table"+str(i)]={"status":"free"}
                 db.child("Hotel").child(hotelid).child("tables").update(up_table)
             if img:
                 db.child("Hotel").child(hotelid).update({"hotelimage": img})
@@ -121,8 +153,8 @@ def myhotel(request):
     hotalid = request.session["hotelid"]
     try:
         hoteldetail = db.child("Hotel").child(hotalid).get().val()
-        hoteldetail.pop("items")
-        hoteldetail.pop("orders")
+        #hoteldetail.pop("items")
+        #hoteldetail.pop("orders")
         userid = request.session["user"]
         usersdetail = db.child("Web").child("hotelusers").child(userid).get().val()
         usersdetail.pop("password")
