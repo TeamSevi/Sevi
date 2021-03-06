@@ -84,3 +84,4 @@
 .flaticon-speech-bubble:before { content: "\f136"; }
 .flaticon-paper-plane:before { content: "\f137"; }
 .flaticon-menu:before { content: "\f138"; }
+.flaticon-qrcode::before { content: "f029";}

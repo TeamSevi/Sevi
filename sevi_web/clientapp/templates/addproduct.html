@@ -33,7 +33,7 @@
                 <h6>Add Product Form</h6>
               </div>
               <div class="ms-panel-body">
-                <form class="needs-validation clearfix"  action="{% url 'addproduct' %}" method="POST" novalidate>
+                <form class="needs-validation clearfix"  action="{% url 'addproduct' %}" method="POST" enctype="multipart/form-data" novalidate>
                     {% csrf_token %}
                   <div class="form-row">
                     <div class="col-md-12 mb-3">
@@ -45,9 +45,30 @@
                         </div>
                       </div>
                     </div>
-  
                     <div class="col-md-6 mb-3">
-                      <label for="validationCustom22">Select Catagory</label>
+                      <label >Food Type</label>
+                      <div class="input_group">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="item_type" id="inlineRadio1" value="veg" {% if idetail.type == "veg" %} checked {% endif %}>
+                          <label class="form-check-label" for="inlineRadio1">veg</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="item_type" id="inlineRadio2" value="non_veg">
+                          <label class="form-check-label" for="inlineRadio2">non-veg</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="validationCustom25">Price</label>
+                      <div class="input-group">
+                        <input type="text" class="form-control" id="validationCustom25" placeholder="Rs." name="price" value="{{idetail.itemprice}}" required>
+                        <div class="invalid-feedback">
+                          Price
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="validationCustom22">Select Category</label>
                       <div class="input-group">
                         <select class="form-control" id="validationCustom22" name="catagory" value="others" required>
                           <option value="">--please choose an option--</option>
@@ -55,26 +76,26 @@
                           <option value="pizza">Pizza</option>
                           <option value="burger">Burger</option>
                           <option value="others">Others</option>
+                          <!--<option data-toggle="modal" data-target="#exampleModal" id="add-catagory">Add catagory</option>-->
   
-                        </select>
+                        </select>&nbsp;
+                        <button type="button" class="btn-primary" data-toggle="modal" data-target="#exampleModal">+</button>
                         <div class="invalid-feedback">
-                          Please select a Catagory.
+                          Please select a Category.
                         </div>
                       </div>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="validationCustom25">Price</label>
-                        <div class="input-group">
-                          <input type="text" class="form-control" id="validationCustom25" placeholder="10 Rs." name="price" value="{{idetail.itemprice}}" required>
-                          <div class="invalid-feedback">
-                            Price
-                          </div>
-                        </div>
+                      <label for="validationCustom18">Sub Category</label>
+                      <div class="input-group">
+                        <input type="text" class="form-control" id="validationCustom18" placeholder="sub-catagory" name="sub-category" value="{{idetail.itemprice}}">
+                      </div>
                     </div>
+                    
                     <div class="col-md-12 mb-3">
                       <label for="validationCustom12">Description</label>
                       <div class="input-group">
-                        <textarea rows="5" id="validationCustom12" class="form-control" placeholder="Message" name="description" required>{{idetail.itemdescription}}</textarea>
+                        <textarea rows="5" id="validationCustom12" class="form-control" placeholder="Describe your product here." name="description" required>{{idetail.itemdescription}}</textarea>
                         <div class="invalid-feedback">
                           Please provide a description.
                         </div>
@@ -89,12 +110,6 @@
                       </div>
                     </div>
                   </div>
-  
-  
-  
-  
-                
-  
               </div>
             </div>
   
@@ -107,26 +122,13 @@
                   <div class="ms-panel-header">
                     <h6>Product </h6>
                   </div>
-                  <!--<div class="ms-panel-body">
-                    <div id="imagesSlider" class="ms-image-slider carousel slide" data-ride="carousel">
-                      <div class="carousel-inner">
-                        <div class="carousel-item active">
-                          <img class="d-block w-100" src="../../assets/img/costic/add-product-1.jpg" alt="First slide">
+                  <div class="ms-panel-body">
+                        <div>
+                          <img class="d-block w-100" src="{{idetail.itemimage}}" alt="First slide">
                         </div>
-                        <div class="carousel-item">
-                          <img class="d-block w-100" src="../../assets/img/costic/add-product-2.jpg" alt="Second slide">
-                        </div>
-                        <div class="carousel-item">
-                          <img class="d-block w-100" src="../../assets/img/costic/add-product-3.jpg" alt="Third slide">
-                        </div>
-                      </div>
-                      <ol class="carousel-indicators">
-                        <li data-target="#imagesSlider" data-slide-to="0" class="active"> <img class="d-block w-100" src="../../assets/img/costic/add-product-1.jpg" alt="First slide"></li>
-                        <li data-target="#imagesSlider" data-slide-to="1"><img class="d-block w-100" src="../../assets/img/costic/add-product-2.jpg" alt="Second slide"></li>
-                        <li data-target="#imagesSlider" data-slide-to="2"><img class="d-block w-100" src="../../assets/img/costic/add-product-3.jpg" alt="Third slide"></li>
-                      </ol>
-                    </div>
-                  </div>-->
+                        
+                      
+                  </div>
                   <div class="ms-panel-header new">
                     <p class="medium">Status Available</p>
                     <div>
@@ -140,9 +142,9 @@
                     <p class="medium">Discount Active</p>
                     <div>
                       {% if idetail.offer %}
-                        <input type="radio" name="offer" value="True"  checked>yes
+                        <input type="checkbox" name="offer" value="True"  checked>yes
                       {% else %}  
-                        <input type="radio" name="offer" value="False" >no
+                        <input type="checkbox" name="offer" value="False" >no
                       {% endif %}
                     </div>
                   </div>
@@ -163,4 +165,39 @@
   
         </div>
       </div>
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Add Categories</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group">
+                  <label for="message-text" class="col-form-label">Categories:</label>
+                  <textarea class="form-control" id="add-categories" placeholder="ex. pizza,burger,ice-cream"></textarea>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" onclick="addcategory()">Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script>
+        $('#categoryModal').on('show.bs.modal', function (event) {
+          var button = $(event.relatedTarget) // Button that triggered the modal
+          var recipient = button.data('whatever') // Extract info from data-* attributes
+          function addcategory(){
+            
+          }
+  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+          var modal = $(this)
+        })
+      </script>
 {% endblock %}

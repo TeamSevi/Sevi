@@ -34,7 +34,7 @@
             <h6>Hotel Details</h6>
           </div>
           <div class="ms-panel-body">
-            <form class="needs-validation clearfix"  action="{% url 'hotel' %}" method="POST" novalidate>
+            <form class="needs-validation clearfix"  action="{% url 'hotel' %}" enctype="multipart/form-data" method="POST" novalidate>
                 {% csrf_token %}
               <div class="form-row">
                 <div class="col-md-12 mb-3">
