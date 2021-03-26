@@ -16,4 +16,5 @@ urlpatterns = [
     path("check-status",views.check_status,name="check-status"),
     path("customerlist", views.customerlist,name="customerlist"),
     path("customersreview",views.customersreview,name="customersreview"),
+    path("statistics",views.statistics,name="statistics"),
 ]

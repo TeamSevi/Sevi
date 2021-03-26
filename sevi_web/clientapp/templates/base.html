@@ -91,9 +91,9 @@
               <a href="#" class="has-chevron" data-toggle="collapse" data-target="#invoice" aria-expanded="false" aria-controls="invoice"> <span><i class="fas fa-file-invoice fs-16"></i>Analysis </span>
               </a>
               <ul id="invoice" class="collapse" aria-labelledby="invoice" data-parent="#side-nav-accordion">
-                <li> <a href="pages/invoice/invoicedetail.html">Selling Detail</a>
+                <li> <a href="{% url 'customersreview' %}">Selling Detail</a>
                 </li>
-                <li> <a href="pages/invoice/invoicelist.html">Other stastitics</a>
+                <li> <a href="{% url 'statistics' %}">Other stastitics</a>
                 </li>
               </ul>
             </li>

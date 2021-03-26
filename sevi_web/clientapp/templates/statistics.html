@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="ms-content-wrapper">
+  <div class="row">
+    <div class="col-md-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb pl-0">
+          <li class="breadcrumb-item"><a href="#"><i class="material-icons">home</i> Home</a>
+          </li>
+          <li class="breadcrumb-item"><a href="#">Charts</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">ChartJS</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="col-xl-6 col-md-12">
+      <div class="ms-panel">
+        <div class="ms-panel-header">
+          <h6>Bar Chart</h6>
+        </div>
+        <div class="ms-panel-body">
+          <div id="bar-chart"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-6 col-md-12">
+      <div class="ms-panel">
+        <div class="ms-panel-header">
+          <h6>Line Chart</h6>
+        </div>
+        <div class="ms-panel-body">
+          <div id="line-chart"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-6 col-md-12">
+      <div class="ms-panel">
+        <div class="ms-panel-header">
+          <h6>Pie Chart</h6>
+        </div>
+        <div class="ms-panel-body">
+          <div id="pie-chart"></div>
+        </div>
+      </div>
+    </div>
+    <!--div class="col-xl-6 col-md-12">
+      <div class="ms-panel">
+        <div class="ms-panel-header">
+          <h6>0 Chart</h6>
+        </div>
+        <div class="ms-panel-body">
+          <div id="scatter-chart"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-6 col-md-12">
+      <div class="ms-panel">
+        <div class="ms-panel-header">
+          <h6>1 Chart</h6>
+        </div>
+        <div class="ms-panel-body">
+          <div id="pie-chart"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-6 col-md-12">
+      <div class="ms-panel">
+        <div class="ms-panel-header">
+          <h6> 2 Chart</h6>
+        </div>
+        <div class="ms-panel-body">
+          <canvas id="bar-chart-grouped"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-6 col-md-12">
+      <div class="ms-panel">
+        <div class="ms-panel-header">
+          <h6>Other</h6>
+        </div>
+        <div class="ms-panel-body">
+          <div id="other"></div>
+        </div>
+      </div>
+    </div>-->
+  </div>
+</div>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<script type="text/javascript">
+
+  google.charts.load('current', {
+    packages: ['corechart']
+  }).then(function () {
+    var frequency = JSON.parse("{{analysis|escapejs}}");
+    //var frequency = {"female":74,"others":2,"na":63,"male":59};
+    var chartData = [];
+    Object.keys(frequency).forEach(function (name) {
+      chartData.push([name, frequency[name]]);
+    });
+    var data = google.visualization.arrayToDataTable(chartData, true);
+    var tdata = google.visualization.arrayToDataTable(chartData, true);
+    tdata.addColumn('string', 'Name');
+    tdata.addColumn('number', 'Salary');
+   
+    var pieoptions = {
+      title: 'ORDERS',
+      pieHole: 0.4,
+    };
+  
+    var piechart = new google.visualization.PieChart(document.getElementById('pie-chart'));
+    piechart.draw(data, pieoptions);
+
+    var lineoptions = {
+      title: 'ORDERS',
+      curveType: 'function',
+      legend: { position: 'bottom' },
+      width: 450,
+      height: 350,
+    };
+
+    var linechart = new google.visualization.LineChart(document.getElementById('line-chart'));
+    linechart.draw(data, lineoptions);
+
+    var baroptions = {
+      title: "ORDERS",
+      width: 450,
+      height: 350,
+      bar: {groupWidth: "95%"},
+      legend: { position: "none" },}
+
+    var barchart = new google.visualization.ColumnChart(document.getElementById('bar-chart'));
+    barchart.draw(data, baroptions);
+  });
+
+  
+</script>
+
+
+{% endblock %}

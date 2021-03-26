@@ -249,3 +249,41 @@ def customersreview(request):
     hotalid = request.session["hotelid"]
     res=db.child("Hotel").child(hotalid).child("reviews").get().val()
     return render(request, "customersreview.html",{"res":res})
+
+def statistics(request):
+    hotelid = request.session['hotelid']
+    d = db.child('Hotel').child(hotelid).child('items').get().val()
+    label = []
+    for i in d:
+        for j, k in d[i].items():
+            if(j == 'itemname'):
+                label.append(k)
+
+    qty = db.child('Hotel').child(hotelid).child('orders').get().val()
+    qtydict = {}
+    qtyval = []
+    
+    for i in qty:
+        #print(i)
+        for j,k in qty[i].items():
+            #print(type(k),k)
+            if (j == 'itemdetails'):
+                for a,b in k.items():
+                    ky = b['itemname']
+                    val = b['quantity']
+                    qtyval.append(int(b['quantity']))
+                    qtydict.update({ky:val})
+
+    analysis = {}
+
+    for key in label:
+        for value in qtyval:
+            analysis[key] = value
+
+    #print(label)
+    #print(qtydict)
+
+    print(analysis)
+    
+    analysis = json.dumps(analysis)
+    return render(request,'statistics.html',{"analysis":analysis})
