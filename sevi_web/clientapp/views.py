@@ -252,38 +252,19 @@ def customersreview(request):
 
 def statistics(request):
     hotelid = request.session['hotelid']
-    d = db.child('Hotel').child(hotelid).child('items').get().val()
-    label = []
-    for i in d:
-        for j, k in d[i].items():
-            if(j == 'itemname'):
-                label.append(k)
+    qtydict = {}
+    itemname = db.child('Hotel').child(hotelid).child('items').get().val()
+    for i in itemname.values():
+        qtydict[i['itemname']] = 0
 
     qty = db.child('Hotel').child(hotelid).child('orders').get().val()
-    qtydict = {}
-    qtyval = []
-    
-    for i in qty:
-        #print(i)
-        for j,k in qty[i].items():
-            #print(type(k),k)
-            if (j == 'itemdetails'):
-                for a,b in k.items():
-                    ky = b['itemname']
-                    val = b['quantity']
-                    qtyval.append(int(b['quantity']))
-                    qtydict.update({ky:val})
-
-    analysis = {}
-
-    for key in label:
-        for value in qtyval:
-            analysis[key] = value
-
-    #print(label)
-    #print(qtydict)
-
-    print(analysis)
-    
-    analysis = json.dumps(analysis)
+    for i in qty.values():
+        if i["itemdetails"]:
+            for v in i["itemdetails"].values():
+                it = v['itemname']
+                if it in qtydict:
+                    qtydict[it] += int(v['quantity'])
+                # else:
+                #     qtydict[it] = int(v['quantity'])
+    analysis = json.dumps(qtydict)
     return render(request,'statistics.html',{"analysis":analysis})
