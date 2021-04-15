@@ -154,7 +154,7 @@ def myhotel(request):
                 db.child("Hotel").child(hotelid).child("tables").update(up_table)
             if img:
                 store.child("images").child(hotelid).child(hotelid+".jpg").put(img)
-                img_url = store.child("images").child(hotelid).child("items/item1.jpg").get_url(None)
+                img_url = store.child("images").child(hotelid).child(hotelid+".jpg").get_url(None)
                 db.child("Hotel").child(hotelid).update({"hotelimage": img_url})
             if npassword:
                 cpass = db.child("Web").child("hotelusers").child(userid).child("password").get().val()
