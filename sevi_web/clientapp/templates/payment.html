@@ -1,0 +1,199 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- Mirrored from slidesigma.com/themes/html/costic/pages/form/form-wizard.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 01 Feb 2020 13:13:41 GMT -->
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% block title %}  {% endblock %}</title>
+  <!-- Iconic Fonts -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'iconic-fonts/flat-icons/flaticon.css' %}">
+  <link href="{% static 'iconic-fonts/font-awesome/css/all.min.css' %}" rel="stylesheet">
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+  <!-- jQuery UI -->
+  <link href="{% static 'css/jquery-ui.min.css' %}" rel="stylesheet">
+  <!-- Costic styles -->
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon.ico">
+  {% block link %} {% endblock %}
+</head>
+
+<body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
+
+  <!-- Preloader -->
+  <div id="preloader-wrap">
+    <div class="spinner spinner-8">
+      <div class="ms-circle1 ms-child"></div>
+      <div class="ms-circle2 ms-child"></div>
+      <div class="ms-circle3 ms-child"></div>
+      <div class="ms-circle4 ms-child"></div>
+      <div class="ms-circle5 ms-child"></div>
+      <div class="ms-circle6 ms-child"></div>
+      <div class="ms-circle7 ms-child"></div>
+      <div class="ms-circle8 ms-child"></div>
+      <div class="ms-circle9 ms-child"></div>
+      <div class="ms-circle10 ms-child"></div>
+      <div class="ms-circle11 ms-child"></div>
+      <div class="ms-circle12 ms-child"></div>
+    </div>
+  </div>
+
+    <div class="ms-content-wrapper">
+      <div class="row">
+        <div class="col-xl-6 col-md-12">
+          <div class="ms-panel">
+            <div class="ms-panel-header">
+              <h6>Be a memeber by contributing some economic effort</h6>
+            </div>
+            <div class="ms-panel-body">
+              <form class="ms-form-wizard ms-wizard-vertical style4-wizard" method="POST">
+                <h3>Payment</h3>
+                <div class="ms-wizard-step">
+                  <div class="form-row">
+                    <div class="col-md-12">
+                      <label>Payment Method</label>
+                      <ul class="ms-payment-container">
+                        <li>
+                          <div class="ms-radio-img">
+                            <input type="radio" name="payment-method" value="">
+                            <div class="ms-payment-img">
+                              <img src="{% static 'img/payment/payment-payoneer.png' %}" alt="payment">
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="ms-radio-img">
+                            <input type="radio" name="payment-method" value="">
+                            <div class="ms-payment-img">
+                              <img src="{% static 'img/payment/payment-visa.png' %}" alt="payment">
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="ms-radio-img">
+                            <input type="radio" name="payment-method" value="">
+                            <div class="ms-payment-img">
+                              <img src="{% static 'img/payment/payment-paypal.png' %}" alt="payment">
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="ms-radio-img">
+                            <input type="radio" name="payment-method" value="">
+                            <div class="ms-payment-img">
+                              <img src="{% static 'img/payment/payment-master.png' %}" alt="payment">
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="col-md-12 mb-3">
+                      <label>Card Holder Name</label>
+                      <div class="input-group">
+                        <input type="text" name="name" class="form-control" placeholder="Card Holder Name">
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <label>Card Number</label>
+                      <div class="input-group">
+                        <input type="text" name="cardnum" class="form-control" placeholder="Card Number">
+                      </div>
+                    </div>
+                    <div class="col-xl-6 col-md-12">
+                      <label>Month</label>
+                      <div class="input-group">
+                        <select class="form-control">
+                          <option value="">01</option>
+                          <option value="">02</option>
+                          <option value="">03</option>
+                          <option value="">04</option>
+                          <option value="">05</option>
+                          <option value="">06</option>
+                          <option value="">07</option>
+                          <option value="">08</option>
+                          <option value="">09</option>
+                          <option value="">10</option>
+                          <option value="">11</option>
+                          <option value="">12</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-xl-6 col-md-12">
+                      <label>Year</label>
+                      <div class="input-group">
+                        <select class="form-control">
+                          <option value="">2020</option>
+                          <option value="">2021</option>
+                          <option value="">2022</option>
+                          <option value="">2023</option>
+                          <option value="">2024</option>
+                          <option value="">2025</option>
+                          <option value="">2026</option>
+                          <option value="">2027</option>
+                          <option value="">2028</option>
+                          <option value="">2029</option>
+                          <option value="">2030</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <label data-toggle="tooltip" data-placement="left" title="3 digit number at the back of your card">CVV <i class="material-icons">info_outline</i> </label>
+                      <div class="input-group">
+                        <input type="text" class="form-control" placeholder="CVV">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <a class="btn btn-primary mt-4 d-block w-100" href="{% url 'index' %}">Sumbit</a>
+                <!--<h3>Proceed</h3>
+                <div class="ms-wizard-step">
+                  <h4>Welcome to the Sevi family</h4>
+                  <br>
+                  <p>
+                    Sevi is the well-renowed platform that handle your restourant digitally.It is the first step of booming your local brand with us and we are very glad to see your restaurant in our platform.                   
+                  </p>
+                  <p>We are 24*7 available for you and feel free to reach us if you face any kind of difficulty regarding to this digital space. </p>
+                  
+                </div>-->
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- SCRIPTS -->
+  <!-- Global Required Scripts Start -->
+  <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+  <script src="{% static 'js/popper.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'js/perfect-scrollbar.js' %}">
+  </script>
+  <script src="{% static 'js/jquery-ui.min.js' %}">
+  </script>
+  <!-- Global Required Scripts End -->
+  <!-- Page Specific Scripts Start -->
+  <script src="{% static 'js/jquery.steps.min.js' %}">
+  </script>
+  <!--<script src="{% static 'js/form-wizard.js' %}">
+  </script>-->
+  <!-- Page Specific Scripts End -->
+  <!-- Costic core JavaScript -->
+  <script src="{% static 'js/framework.js' %}"></script>
+  <!-- Settings -->
+  <script src="{% static 'js/settings.js' %}"></script>
+</body>
+
+
+<!-- Mirrored from slidesigma.com/themes/html/costic/pages/form/form-wizard.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 01 Feb 2020 13:13:42 GMT -->
+</html>

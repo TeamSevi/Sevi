@@ -6,6 +6,7 @@ from collections import OrderedDict
 import json
 import pyrebase
 import qrcode,secrets,string,os
+import http.client, urllib.parse
 
 firebaseConfig = {
     'apiKey': "AIzaSyDHECxnjEG1AmiN_pbbunQQPEyUW_Ffl34",
@@ -112,10 +113,18 @@ def signup(request):
             val={"email":email,"firstname":fname,"hotelid":hid,"hotelname":None,"lastname":lname,"password":passw,"phoneno":num}
             db.child("Web").child("hotelusers").child(num).set(val)
             db.child("Hotel").child(hid).set({"items":"","orders":"","totaltables":0,"QRstring":qrstring,"QRimage":qr_url})
-            return HttpResponseRedirect(reverse("index"))
+            return HttpResponseRedirect(reverse("payment"))
         else:
             status="User already exits !!! Please log in "
     return render(request, "signup.html",{'status':status})
+
+def payment(request):
+    if request.method=="POST":
+        cardnum=request.POST.get('cardnum',False)
+        name=request.POST.get('name',False).lower()
+        return redirect('/index/')
+
+    return render(request,"payment.html")
 
 
 def neworders(request):
@@ -268,3 +277,21 @@ def statistics(request):
                 #     qtydict[it] = int(v['quantity'])
     analysis = json.dumps(qtydict)
     return render(request,'statistics.html',{"analysis":analysis})
+
+def test(request):
+    conn = http.client.HTTPConnection('api.positionstack.com')
+
+    params = urllib.parse.urlencode({
+    'access_key': '50ffade533f4b96988ca2b0115caa85f',
+    'query': '76 pooja park,Surat',
+
+    'limit': 1,
+    })
+
+    conn.request('GET', '/v1/forward?{}'.format(params))
+
+    res = conn.getresponse()
+    data = res.read()
+    print(data.decode('utf-8'))
+
+    return render(request,"test.html")
