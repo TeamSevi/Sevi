@@ -110,7 +110,7 @@ def signup(request):
             store.child("images").child(hid).child(hid+"qr.jpg").put(hid+"qr.jpg")
             os.remove(hid+"qr.jpg")
             qr_url = store.child("images").child(hid).child(hid+"qr.jpg").get_url(None)
-            val={"email":email,"firstname":fname,"hotelid":hid,"hotelname":None,"lastname":lname,"password":passw,"phoneno":num}
+            val={"email":email,"firstname":fname,"hotelid":hid,"hotelname":None,"lastname":lname,"password":passw,"phoneno":num,"cords":{"lat":0,"lon":0}}
             db.child("Web").child("hotelusers").child(num).set(val)
             db.child("Hotel").child(hid).set({"items":"","orders":"","totaltables":0,"QRstring":qrstring,"QRimage":qr_url})
             return HttpResponseRedirect(reverse("payment"))
@@ -285,17 +285,17 @@ def statistics(request):
 def location(request):
     userid = request.session["user"]
 
-    val = db.child("Web").child("hotelusers").child(userid).child("cordinates").get().val()
-    #print(latlan['latitude'])
+    val = db.child("Web").child("hotelusers").child(userid).child("cords").get().val()
+    #print(val['latitude'])
 
     jsondata = json.dumps(val)
 
     if request.method=="POST":
         lat=request.POST.get('latitude',False)
         lon=request.POST.get('longtitude',False)
-        #print(lat,lon)
+        print(lat,lon)
 
-        val = {"cordinates":{"latitude":lat,"longtitude":lon}}
+        val = {"cords":{"lat":lat,"lon":lon}}
         db.child("Web").child("hotelusers").child(userid).update(val)
 
     return render(request,"location.html",{"latlan":jsondata})

@@ -212,10 +212,16 @@
 {% block content %}
 
 <div class="container">
+  
+  <b>Address Lookup</b>
+  <div id="search">
+  <input type="text" name="addr" value="" id="addr" size="58" />
+  <button type="button" onclick="addr_search();">Search</button>
+  <div id="results"></div>
+  </div>
+  
+  <br/><br>
 
-
-  <b><h4>Coordinates</h4></b>
-  <br>
   <form action="{% url 'location' %}" method="POST">
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <b>Latitude</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -226,32 +232,19 @@
    
    <button type="submit">Set My Location</button>
  </form>
-
-    <!--<br><br>-->
-  
-  <b><h4>Address Lookup</h4></b>
-  <div id="search">
-  <input type="text" name="addr" value="" id="addr" size="58" />
-  <button type="button" onclick="addr_search();">Search</button>
-  <div id="results"></div>
-  </div>
-  
-  <br />
+ 
+ <br>
   
   <div id="map"></div>
   
   </div>
   
   <script type="text/javascript">
-
-  /*window.setTimeout(function () {
-      location.href = "{% url 'location' %}";
-  }, 5000)*/
   
   var data = JSON.parse("{{latlan|escapejs}}");
 
-  var startlat = data['latitude'];
-  var startlon = data['longtitude'];
+  var startlat = data['lat'];
+  var startlon = data['lon'];
   
   var options = {
    center: [startlat, startlon],
@@ -328,7 +321,7 @@
   }
   
   </script>
-
+  
 {% endblock %}
   
 
