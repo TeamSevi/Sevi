@@ -122,6 +122,7 @@ def payment(request):
     if request.method=="POST":
         cardnum=request.POST.get('cardnum',False)
         name=request.POST.get('name',False).lower()
+        print(cardnum,name)
         return redirect('/index/')
 
     return render(request,"payment.html")
@@ -278,20 +279,21 @@ def statistics(request):
     analysis = json.dumps(qtydict)
     return render(request,'statistics.html',{"analysis":analysis})
 
-def test(request):
-    conn = http.client.HTTPConnection('api.positionstack.com')
 
-    params = urllib.parse.urlencode({
-    'access_key': '50ffade533f4b96988ca2b0115caa85f',
-    'query': '76 pooja park,Surat',
+def location(request):
+    userid = request.session["user"]
 
-    'limit': 1,
-    })
+    val = db.child("Web").child("hotelusers").child(userid).child("cordinates").get().val()
+    #print(latlan['latitude'])
 
-    conn.request('GET', '/v1/forward?{}'.format(params))
+    jsondata = json.dumps(val)
 
-    res = conn.getresponse()
-    data = res.read()
-    print(data.decode('utf-8'))
+    if request.method=="POST":
+        lat=request.POST.get('latitude',False)
+        lon=request.POST.get('longtitude',False)
+        #print(lat,lon)
 
-    return render(request,"test.html")
+        val = {"cordinates":{"latitude":lat,"longtitude":lon}}
+        db.child("Web").child("hotelusers").child(userid).update(val)
+
+    return render(request,"location.html",{"latlan":jsondata})

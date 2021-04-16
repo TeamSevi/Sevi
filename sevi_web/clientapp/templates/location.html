@@ -1,0 +1,360 @@
+{% load static %}
+<html>
+    <head>
+      <meta charset="utf-8">
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title> {% block title %}  {% endblock %} </title>
+        <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'iconic-fonts/flat-icons/flaticon.css' %}">
+        <link href="{% static 'iconic-fonts/font-awesome/css/all.min.css' %}" rel="stylesheet">
+        <!-- Bootstrap core CSS -->
+        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+        <!-- jQuery UI -->
+        <link href="{% static 'css/jquery-ui.min.css' %}" rel="stylesheet">
+        <!-- Page Specific CSS (Slick Slider.css) -->
+        <link href="{% static 'css/slick.css' %}" rel="stylesheet">
+        <link href="{% static 'css/datatables.min.css' %}" rel="stylesheet">
+        <!-- Costic styles -->
+        <link href="{% static 'css/style.css' %}" rel="stylesheet">
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" />
+      <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
+      <style type="text/css">
+        html, body { width:100%;padding:0;margin:0; }
+        .container { width:98%;max-width:980px;padding:1% 2%;margin:0 auto }
+        #lat, #lon { text-align:right }
+        #map { width:100%;height:60%;padding:0;margin:0; }
+        .address { cursor:pointer }
+        .address:hover { color:#AA0000;text-decoration:underline }
+      </style>
+      {% block link %} {% endblock %}
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+    <body class="ms-body ms-aside-left-open ms-primary-theme">
+      <!-- Preloader 
+      <div id="preloader-wrap">
+        <div class="spinner spinner-8">
+          <div class="ms-circle1 ms-child"></div>
+          <div class="ms-circle2 ms-child"></div>
+          <div class="ms-circle3 ms-child"></div>
+          <div class="ms-circle4 ms-child"></div>
+          <div class="ms-circle5 ms-child"></div>
+          <div class="ms-circle6 ms-child"></div>
+          <div class="ms-circle7 ms-child"></div>
+          <div class="ms-circle8 ms-child"></div>
+          <div class="ms-circle9 ms-child"></div>
+          <div class="ms-circle10 ms-child"></div>
+          <div class="ms-circle11 ms-child"></div>
+          <div class="ms-circle12 ms-child"></div>
+        </div>
+      </div>-->
+      <!-- Overlays -->
+      <div class="ms-aside-overlay ms-overlay-left ms-toggler" data-target="#ms-side-nav" data-toggle="slideLeft"></div>
+      <div class="ms-aside-overlay ms-overlay-right ms-toggler" data-target="#ms-recent-activity" data-toggle="slideRight"></div>
+      <!-- Sidebar Navigation Left -->
+      <aside id="ms-side-nav" class="side-nav fixed ms-aside-scrollable ms-aside-left">
+        <!-- Logo -->
+        <div class="logo-sn ms-d-block-lg">
+          <a class="pl-0 ml-0 text-center" href="{% url 'index' %}">
+            <img src="{% static 'img/costic/sevi.png' %}" alt="logo" >
+          </a>
+        </div>
+        <!-- Navigation -->
+        <ul class="accordion ms-main-aside fs-14" id="side-nav-accordion">
+          <!-- home -->
+          <li class="menu-item">
+            <a href="{% url 'index' %}" ><span><i class="material-icons fs-16">dashboard</i> Home </span></a>
+          <!--  <ul id="dashboard" class="collapse" aria-labelledby="dashboard" data-parent="#side-nav-accordion">
+              <li> <a href="{% url 'index' %}">Tables</a></li>
+            </ul>-->
+          </li>
+          <!-- /home -->
+          <!-- orders -->
+          <li class="menu-item">
+              <a href="{% url 'orders' %}"> <span><i class="fas fa-clipboard-list fs-16"></i>Orders</span>
+              </a>
+          </li>
+          <!-- orders end -->
+          <!-- restaurant -->
+          <li class="menu-item">
+              <a href="{% url 'hotel' %}"> <span><i class="fa fa-tasks fs-16"></i>My Hotel</span>
+              </a>
+            </li>
+          <!-- Setting location -->
+          <li class="menu-item">
+            <a href="{% url 'location' %}"> <span><i class="fa fa-map-marker"></i>Set my location</span>
+            </a>
+          </li>
+            <!-- restaurant end -->
+          <!-- product -->
+          <li class="menu-item">
+            <a href="#" class="has-chevron" data-toggle="collapse" data-target="#product" aria-expanded="false" aria-controls="product"> <span><i class="fa fa-archive fs-16"></i>Items </span>
+            </a>
+            <ul id="product" class="collapse" aria-labelledby="product" data-parent="#side-nav-accordion">
+              <li> <a href="{% url 'productlist' %}">Product List</a>
+              </li>
+              <li> <a href="{% url 'addproduct' %}">Add Product</a>
+              </li>
+            </ul>
+          </li>
+          <!-- product end -->
+          <!-- data -->
+          <li class="menu-item">
+            <a href="{% url 'statistics' %}"> <span><i class="fas fa-file-invoice fs-16"></i>Analysis</span>
+            </a>
+          </li>
+          <!-- data end -->
+          <!-- customers-->
+          <li class="menu-item">
+            <a href="#" class="has-chevron" data-toggle="collapse" data-target="#customer" aria-expanded="false" aria-controls="customer"> <span><i class="fas fa-user-friends fs-16"></i>Customers </span>
+            </a>
+            <ul id="customer" class="collapse" aria-labelledby="customer" data-parent="#side-nav-accordion">
+              <li> <a href="{% url 'customersreview' %}">Customers Review</a>
+              </li>
+              <li> <a href="{% url 'customerlist' %}">Customers List</a>
+              </li>
+            </ul>
+          </li>
+          <!-- Customers  end -->
+         </ul>
+      </aside>
+      <!-- Main Content -->
+      <main class="body-content" >  
+      <!-- Navigation Bar -->
+      <nav class="navbar ms-navbar" >
+    <div class="ms-aside-toggler ms-toggler pl-0" data-target="#ms-side-nav" data-toggle="slideLeft"> <span class="ms-toggler-bar bg-primary"></span>
+      <span class="ms-toggler-bar bg-primary"></span>
+      <span class="ms-toggler-bar bg-primary"></span>
+    </div>
+    <div class="logo-sn logo-sm ms-d-block-sm">
+      <a class="pl-0 ml-0 text-center navbar-brand mr-0" href="index.html"><img src="{% static 'img/costic/sevi.png' %}" alt="logo"> </a>
+    </div>
+    <ul class="ms-nav-list ms-inline mb-0" id="ms-nav-options">
+      <!--<li class="ms-nav-item ms-search-form pb-0 py-0">
+        <form class="ms-form" method="post">
+          <div class="ms-form-group my-0 mb-0 has-icon fs-14">
+            <input type="search" class="ms-form-input" name="search" placeholder="Search here..." value=""> <i class="flaticon-search text-disabled"></i>
+          </div>
+        </form>
+      </li>-->
+      <li class="ms-nav-item dropdown"> <a href="#" class="text-disabled " id="notificationDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{% static 'img/costic/qr_code.png' %}"></a>
+        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="notificationDropdown">
+          <li class="dropdown-menu-header">
+            <h6 class="dropdown-header ms-inline m-0"><span class="text-disabled">QR Code</span></h6><span class="badge badge-pill badge-info"></span>
+          </li>
+          <li class="dropdown-divider"></li>
+          <div>
+            <img class="d-block w-100" src="{{qrcode}}" alt="First slide">
+          </div>
+          <!--<li class="ms-scrollable ms-dropdown-list">
+            <a class="media p-2" href="#">
+              <div class="media-body"> <span>12 ways to improve your crypto dashboard</span>
+                <p class="fs-10 my-1 text-disabled"><i class="material-icons">access_time</i> 30 seconds ago</p>
+              </div>
+            </a>
+            <a class="media p-2" href="#">
+              <div class="media-body"> <span>You have newly registered users</span>
+                <p class="fs-10 my-1 text-disabled"><i class="material-icons">access_time</i> 45 minutes ago</p>
+              </div>
+            </a>
+            <a class="media p-2" href="#">
+              <div class="media-body"> <span>Your account was logged in from an unauthorized IP</span>
+                <p class="fs-10 my-1 text-disabled"><i class="material-icons">access_time</i> 2 hours ago</p>
+              </div>
+            </a>
+            <a class="media p-2" href="#">
+              <div class="media-body"> <span>An application form has been submitted</span>
+                <p class="fs-10 my-1 text-disabled"><i class="material-icons">access_time</i> 1 day ago</p>
+              </div>
+            </a>
+          </li>
+          <li class="dropdown-divider"></li>
+          <li class="dropdown-menu-footer text-center"> <a href="#">View all Notifications</a>
+          </li>-->
+        </ul>
+      </li>
+
+      <li class="ms-nav-item ms-nav-user dropdown">
+        <a href="#" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <img class="ms-user-img ms-img-round float-right" src="{% static 'img/costic/person.png' %}" alt="people">
+        </a>
+        <ul class="dropdown-menu dropdown-menu-right user-dropdown" aria-labelledby="userDropdown">
+          <li class="dropdown-menu-header">
+            <h6 class="dropdown-header ms-inline m-0"><span class="text-disabled">Welcome, {{ personname }}</span></h6>
+          </li>
+          <!--<li class="dropdown-divider"></li>
+          <li class="ms-dropdown-list">
+            <a class="media fs-14 p-2" href="pages/prebuilt-pages/user-profile.html"> <span><i class="flaticon-user mr-2"></i> Profile</span>
+            </a>
+            <a class="media fs-14 p-2" href="pages/prebuilt-pages/user-profile.html"> <span><i class="flaticon-gear mr-2"></i> Account Settings</span>
+            </a>
+          </li>-->
+          <li class="dropdown-divider"></li>
+          <!--<li class="dropdown-menu-footer">
+            <a class="media fs-14 p-2" href="pages/prebuilt-pages/lock-screen.html"> <span><i class="flaticon-security mr-2"></i> Lock</span>
+            </a>
+          </li>-->
+          <li class="dropdown-menu-footer">
+            <a class="media fs-14 p-2" href="{% url 'logout' %}"> <span><i class="flaticon-shut-down mr-2"></i> Logout</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <div class="ms-toggler ms-d-block-sm pr-0 ms-nav-toggler" data-toggle="slideDown" data-target="#ms-nav-options"> <span class="ms-toggler-bar bg-primary"></span>
+      <span class="ms-toggler-bar bg-primary"></span>
+      <span class="ms-toggler-bar bg-primary"></span>
+    </div>
+  </nav>
+
+{% block content %}
+
+<div class="container">
+
+
+  <b><h4>Coordinates</h4></b>
+  <br>
+  <form action="{% url 'location' %}" method="POST">
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <b>Latitude</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <b>Longtitude</b><br>
+    {% csrf_token %}
+   <input type="text" name="latitude" id="lat" size=12 value="">
+   <input type="text" name="longtitude" id="lon" size=12 value="">
+   
+   <button type="submit">Set My Location</button>
+ </form>
+
+    <!--<br><br>-->
+  
+  <b><h4>Address Lookup</h4></b>
+  <div id="search">
+  <input type="text" name="addr" value="" id="addr" size="58" />
+  <button type="button" onclick="addr_search();">Search</button>
+  <div id="results"></div>
+  </div>
+  
+  <br />
+  
+  <div id="map"></div>
+  
+  </div>
+  
+  <script type="text/javascript">
+
+  /*window.setTimeout(function () {
+      location.href = "{% url 'location' %}";
+  }, 5000)*/
+  
+  var data = JSON.parse("{{latlan|escapejs}}");
+
+  var startlat = data['latitude'];
+  var startlon = data['longtitude'];
+  
+  var options = {
+   center: [startlat, startlon],
+   zoom: 9
+  }
+  
+  document.getElementById('lat').value = startlat;
+  document.getElementById('lon').value = startlon;
+  
+  var map = L.map('map', options);
+  var nzoom = 12;
+  
+  L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {attribution: 'OSM'}).addTo(map);
+  
+  var myMarker = L.marker([startlat, startlon], {title: "Coordinates", alt: "Coordinates", draggable: true}).addTo(map).on('dragend', function() {
+   var lat = myMarker.getLatLng().lat.toFixed(8);
+   var lon = myMarker.getLatLng().lng.toFixed(8);
+   var czoom = map.getZoom();
+   if(czoom < 18) { nzoom = czoom + 2; }
+   if(nzoom > 18) { nzoom = 18; }
+   if(czoom != 18) { map.setView([lat,lon], nzoom); } else { map.setView([lat,lon]); }
+   document.getElementById('lat').value = lat;
+   document.getElementById('lon').value = lon;
+   myMarker.bindPopup("Lat " + lat + "<br />Lon " + lon).openPopup();
+  });
+  
+  function chooseAddr(lat1, lng1)
+  {
+   myMarker.closePopup();
+   map.setView([lat1, lng1],18);
+   myMarker.setLatLng([lat1, lng1]);
+   lat = lat1.toFixed(8);
+   lon = lng1.toFixed(8);
+   document.getElementById('lat').value = lat;
+   document.getElementById('lon').value = lon;
+   myMarker.bindPopup("Lat " + lat + "<br />Lon " + lon).openPopup();
+  }
+  
+  function myFunction(arr)
+  {
+   var out = "<br />";
+   var i;
+  
+   if(arr.length > 0)
+   {
+    for(i = 0; i < arr.length; i++)
+    {
+     out += "<div class='address' title='Show Location and Coordinates' onclick='chooseAddr(" + arr[i].lat + ", " + arr[i].lon + ");return false;'>" + arr[i].display_name + "</div>";
+    }
+    document.getElementById('results').innerHTML = out;
+   }
+   else
+   {
+    document.getElementById('results').innerHTML = "Sorry, no results...";
+   }
+  
+  }
+  
+  function addr_search()
+  {
+   var inp = document.getElementById("addr");
+   var xmlhttp = new XMLHttpRequest();
+   var url = "https://nominatim.openstreetmap.org/search?format=json&limit=3&q=" + inp.value;
+   xmlhttp.onreadystatechange = function()
+   {
+     if (this.readyState == 4 && this.status == 200)
+     {
+      var myArr = JSON.parse(this.responseText);
+      myFunction(myArr);
+     }
+   };
+   xmlhttp.open("GET", url, true);
+   xmlhttp.send();
+  }
+  
+  </script>
+
+{% endblock %}
+  
+
+</main>
+    
+<!-- SCRIPTS -->
+<!-- Global Required Scripts Start -->
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/perfect-scrollbar.js' %}"></script>
+<script src="{% static 'js/jquery-ui.min.js' %}"></script>
+<!-- Global Required Scripts End -->
+ <!-- Page Specific Scripts Start -->
+
+<script src="{% static 'js/Chart.bundle.min.js' %}"></script>
+<script src="{% static 'js/widgets.js' %}"> </script>
+<script src="{% static 'js/clients.js' %}"> </script>
+<script src="{% static 'js/Chart.Financial.js' %}"> </script>
+<script src="{% static 'js/d3.v3.min.js' %}"></script>
+<script src="{% static 'js/topojson.v1.min.js' %}"></script>
+<script src="{% static 'js/datatables.min.js' %}"></script>
+<script src="{% static 'js/data-tables.js' %}"></script>
+<!-- Page Specific Scripts Finish -->
+<!-- Costic core JavaScript -->
+<script src="{% static 'js/framework.js' %}"></script>
+<!-- Settings -->
+<script src="{% static 'js/settings.js' %}"></script>
+</body>
+</html>
