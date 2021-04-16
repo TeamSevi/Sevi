@@ -141,12 +141,11 @@ def myhotel(request):
     usersdetail,hoteldetail="",""
     err = {}
     if request.method=="POST":
-        try:
+        # try:
             hotelname = request.POST["hotelname"]
             ttables = request.POST["tables"]
             city = request.POST["city"]
             address = request.POST["address"]
-            img = request.FILES["image"]
             firstname = request.POST["firstname"]
             lastname = request.POST["lastname"]
             phone = request.POST["phone"]
@@ -160,9 +159,10 @@ def myhotel(request):
                 up_table = {}
                 db.child("Hotel").child(hotelid).child("tables").remove()
                 for i in range(1,int(ttables)+1):
-                    up_table["table"+str(i)]={"status":"free"}
+                    up_table["table"+str(i)]={"name":"table"+str(i), "status":"free"}
                 db.child("Hotel").child(hotelid).child("tables").update(up_table)
-            if img:
+            if 'image' in request.FILES:
+                img = request.FILES["image"]
                 store.child("images").child(hotelid).child(hotelid+".jpg").put(img)
                 img_url = store.child("images").child(hotelid).child(hotelid+".jpg").get_url(None)
                 db.child("Hotel").child(hotelid).update({"hotelimage": img_url})
@@ -177,8 +177,8 @@ def myhotel(request):
             update_db = {"hotelname": hotelname,"hotelcity": city,"hoteladdress": address,"totaltables":ttables}
             db.child("Hotel").child(hotelid).update(update_db)
             err = {"status":"success","one":"Well done!","two":"Details Updated Successfully."}
-        except:
-            err = {"status":"danger","one":"Try again!","two":"Something went wrong."}
+        # except:
+        #     err = {"status":"danger","one":"Try again!","two":"Something went wrong."}
     hotalid = request.session["hotelid"]
     try:
         hoteldetail = db.child("Hotel").child(hotalid).get().val()
@@ -264,18 +264,20 @@ def statistics(request):
     hotelid = request.session['hotelid']
     qtydict = {}
     itemname = db.child('Hotel').child(hotelid).child('items').get().val()
-    for i in itemname.values():
-        qtydict[i['itemname']] = 0
+    if itemname:
+        for i in itemname.values():
+            qtydict[i['itemname']] = 0
 
     qty = db.child('Hotel').child(hotelid).child('orders').get().val()
-    for i in qty.values():
-        if i["itemdetails"]:
-            for v in i["itemdetails"].values():
-                it = v['itemname']
-                if it in qtydict:
-                    qtydict[it] += int(v['quantity'])
-                # else:
-                #     qtydict[it] = int(v['quantity'])
+    if qty:
+        for i in qty.values():
+            if i["itemdetails"]:
+                for v in i["itemdetails"].values():
+                    it = v['itemname']
+                    if it in qtydict:
+                        qtydict[it] += int(v['quantity'])
+                    # else:
+                    #     qtydict[it] = int(v['quantity'])
     analysis = json.dumps(qtydict)
     return render(request,'statistics.html',{"analysis":analysis})
 
